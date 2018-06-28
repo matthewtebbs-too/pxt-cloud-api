@@ -25,7 +25,7 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 
 var ts = require('gulp-typescript');
-var tsProject = ts.createProject('tsconfig.json');
+var tsProject = ts.createProject(SRC.concat('tsconfig.json'));
 
 gulp.task('clean', function (done) {
     del([BUILT, BUILT_TEST, DST, LIB]).then(paths => done());

@@ -6,4 +6,4 @@
 
 export * from './index';
 
-export as namespace PxtCloud;
+export as namespace PxtCloudAPI;

@@ -44,18 +44,26 @@ export interface ChatAPI extends CommonAPI {
     newMessage(msg: string | MessageData): PromiseLike<void>;
 }
 
-export interface SyncedDataSource<T> {
-    readonly data: T;
-    readonly cloner?: (value: any) => any;
+export type DataDiff = any;
+
+export type DataCloner = (value: any, cloner: DataCloner) => any;
+
+export interface DataSource {
+    readonly data: any;
+    readonly cloner?: DataCloner;
 }
 
-export interface SyncedData<T> {
-    readonly source: SyncedDataSource<T>;
+export interface SyncedData {
+    readonly source: DataSource;
     timestamp?: string;
-    latest?: T;
+    latest?: any;
 }
 
 export interface WorldAPI extends CommonAPI {
+    addSyncedData(name: string, source_: DataSource): boolean;
+    removeSyncedData(name: string): boolean;
+    syncData(name: string): Promise<string[]>;
+    syncDiff(name: string, diff: DataDiff[]): PromiseLike<string[]>;
 }
 
 export interface PublicAPI {

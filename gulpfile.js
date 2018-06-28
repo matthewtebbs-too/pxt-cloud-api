@@ -44,6 +44,7 @@ gulp.task('build', function () {
 
 var glob = require('glob');
 var browserify = require('browserify');
+var babelify = require('babelify');
 var uglifyjs = require('uglify-js');
 var rename = require('gulp-rename');
 var composer = require('gulp-uglify/composer');
@@ -56,11 +57,15 @@ gulp.task('bundle', function () {
         .pipe(source('index.js'))
         .pipe(gulp.dest(LIB));
 
-    var bundle = browserify(
-        {
+    var bundle = browserify({
             entries: glob.sync(BUILT.concat('**/*.js')),
             standalone: 'PxtCloudAPI',
-        }).bundle();
+        })
+        .transform(babelify, {
+            global: true,
+            presets: ["env"]
+        })
+        .bundle();
 
     var resultb = bundle
         .pipe(source('pxtcloud.api.dev.js'))

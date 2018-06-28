@@ -1,0 +1,9 @@
+.env
+built
+built.*
+dump.rdb
+gh-pages
+node_modules
+projects
+temp
+tmp

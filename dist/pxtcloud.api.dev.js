@@ -66,8 +66,9 @@ function __export(m) {
 }
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./api"));
+__export(require("./datarepo"));
 
-},{"./api":1}],4:[function(require,module,exports){
+},{"./api":1,"./datarepo":2}],4:[function(require,module,exports){
 'use strict';
 
 exports.byteLength = byteLength;

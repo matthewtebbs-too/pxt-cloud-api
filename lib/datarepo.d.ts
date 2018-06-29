@@ -13,6 +13,6 @@ export declare class DataRepo {
     addDataSource(name: string, source_: DataSource): boolean;
     removeDataSource(name: string): boolean;
     currentlySynced(name: string): any | null;
-    syncToData(name: string): DataDiff[] | null;
+    syncData(name: string): DataDiff[] | null;
     applyDiffs(name: string, diff: DataDiff | DataDiff[]): boolean;
 }

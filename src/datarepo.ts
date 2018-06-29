@@ -47,7 +47,7 @@ export class DataRepo {
         return data.latest || null;
     }
 
-    public syncToData(name: string): DataDiff[] | null {
+    public syncData(name: string): DataDiff[] | null {
         const data = this._synceddata[name];
         if (!data) {
             return null;

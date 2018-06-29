@@ -39,7 +39,7 @@ var DataRepo = function () {
         }
         return data.latest || null;
     };
-    DataRepo.prototype.syncToData = function (name) {
+    DataRepo.prototype.syncData = function (name) {
         var data = this._synceddata[name];
         if (!data) {
             return null;

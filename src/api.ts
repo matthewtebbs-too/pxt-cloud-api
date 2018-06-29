@@ -49,7 +49,7 @@ export interface ChatAPI extends CommonAPI {
 export interface WorldAPI extends CommonAPI {
     addDataSource(name: string, source_: DataSource): boolean;
     removeDataSource(name: string): boolean;
-    syncData(name: string): Promise<string[]>;
+    syncData(name: string): PromiPromiseLikese<string[]>;
     syncDiff(name: string, diff: any | any[] /* deep-diff's IDiff */): PromiseLike<string[]>;
 }
 

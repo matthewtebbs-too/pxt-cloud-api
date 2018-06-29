@@ -54,9 +54,13 @@ var DataRepo = function () {
         if (!data) {
             return false;
         }
-        diff.forEach(function (diff_) {
-            return DiffDeep.applyChange(data.latest, data.latest, diff_);
-        });
+        if (Array.isArray(diff)) {
+            diff.forEach(function (diff_) {
+                return DiffDeep.applyChange(data.latest, data.latest, diff_);
+            });
+        } else {
+            DiffDeep.applyChange(data.latest, data.latest, diff);
+        }
         return true;
     };
     return DataRepo;

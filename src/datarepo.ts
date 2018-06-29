@@ -61,13 +61,17 @@ export class DataRepo {
         return diff_;
     }
 
-    public applyDiffs(name: string, diff: DataDiff[]): boolean {
+    public applyDiffs(name: string, diff: DataDiff | DataDiff[]): boolean {
         const data = this._synceddata[name];
         if (!data) {
             return false;
         }
 
-        diff.forEach(diff_ => DiffDeep.applyChange(data.latest, data.latest, diff_));
+        if (Array.isArray(diff)) {
+            diff.forEach(diff_ => DiffDeep.applyChange(data.latest, data.latest, diff_));
+        } else {
+            DiffDeep.applyChange(data.latest, data.latest, diff);
+        }
 
         return true;
     }

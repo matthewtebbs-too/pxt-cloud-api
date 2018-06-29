@@ -5,11 +5,22 @@
     Copyright (c) 2018 MuddyTummy Software LLC
 */
 
-// tslint:disable-next-line:variable-name
 const cloneDeep = require('clone-deep');
-const diff = require('deep-diff');
+import * as DiffDeep from 'deep-diff';
 
-import { DataDiff, DataSource, SyncedData } from './api';
+export type DataDiff = any;
+
+export type DataCloner = (value: any, cloner: DataCloner) => any;
+
+export interface DataSource {
+    readonly data: any;
+    readonly cloner?: DataCloner;
+}
+
+export interface SyncedData {
+    readonly source: DataSource;
+    latest?: any;
+}
 
 export class DataRepo {
     private _synceddata: { [key: string]: SyncedData } = {};
@@ -27,28 +38,37 @@ export class DataRepo {
         return delete this._synceddata[name];
     }
 
-    public currentSynced(name: string): any | undefined {
+    public currentlySynced(name: string): any | null {
         const data = this._synceddata[name];
         if (!data) {
-            return;
+            return null;
         }
 
-        return data.latest;
+        return data.latest || null;
     }
 
-    public syncToData(name: string): DataDiff[] | undefined {
+    public syncToData(name: string): DataDiff[] | null {
         const data = this._synceddata[name];
         if (!data) {
-            return;
+            return null;
         }
 
         const latest = data.source.cloner ? data.source.cloner(data.source, cloneDeep) : cloneDeep(data.source);
-        const diff_ = diff(data.latest || {}, latest);
-        if (!diff_) {
-            return;
-        }
+        const diff_ = DiffDeep.diff(data.latest || {}, latest) || [];
 
         data.latest = latest;
+
         return diff_;
+    }
+
+    public applyDiffs(name: string, diff: DataDiff[]): boolean {
+        const data = this._synceddata[name];
+        if (!data) {
+            return false;
+        }
+
+        diff.forEach(diff_ => DiffDeep.applyChange(data.latest, data.latest, diff_));
+
+        return true;
     }
 }

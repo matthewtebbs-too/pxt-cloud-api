@@ -1,8 +1,18 @@
-import { DataDiff, DataSource } from './api';
+export declare type DataDiff = any;
+export declare type DataCloner = (value: any, cloner: DataCloner) => any;
+export interface DataSource {
+    readonly data: any;
+    readonly cloner?: DataCloner;
+}
+export interface SyncedData {
+    readonly source: DataSource;
+    latest?: any;
+}
 export declare class DataRepo {
     private _synceddata;
     addDataSource(name: string, source_: DataSource): boolean;
     removeDataSource(name: string): boolean;
-    currentSynced(name: string): any | undefined;
-    syncToData(name: string): DataDiff[] | undefined;
+    currentlySynced(name: string): any | null;
+    syncToData(name: string): DataDiff[] | null;
+    applyDiffs(name: string, diff: DataDiff[]): boolean;
 }

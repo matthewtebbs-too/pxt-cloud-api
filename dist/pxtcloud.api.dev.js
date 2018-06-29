@@ -17,7 +17,7 @@ var Events;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var cloneDeep = require('clone-deep');
-var diff = require('deep-diff');
+var DiffDeep = require("deep-diff");
 var DataRepo = function () {
     function DataRepo() {
         this._synceddata = {};
@@ -32,25 +32,32 @@ var DataRepo = function () {
     DataRepo.prototype.removeDataSource = function (name) {
         return delete this._synceddata[name];
     };
-    DataRepo.prototype.currentSynced = function (name) {
+    DataRepo.prototype.currentlySynced = function (name) {
         var data = this._synceddata[name];
         if (!data) {
-            return;
+            return null;
         }
-        return data.latest;
+        return data.latest || null;
     };
     DataRepo.prototype.syncToData = function (name) {
         var data = this._synceddata[name];
         if (!data) {
-            return;
+            return null;
         }
         var latest = data.source.cloner ? data.source.cloner(data.source, cloneDeep) : cloneDeep(data.source);
-        var diff_ = diff(data.latest || {}, latest);
-        if (!diff_) {
-            return;
-        }
+        var diff_ = DiffDeep.diff(data.latest || {}, latest) || [];
         data.latest = latest;
         return diff_;
+    };
+    DataRepo.prototype.applyDiffs = function (name, diff) {
+        var data = this._synceddata[name];
+        if (!data) {
+            return false;
+        }
+        diff.forEach(function (diff_) {
+            return DiffDeep.applyChange(data.latest, data.latest, diff_);
+        });
+        return true;
     };
     return DataRepo;
 }();

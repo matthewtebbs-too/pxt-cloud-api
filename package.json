@@ -60,6 +60,7 @@
   "scripts": {
     "clean": "gulp clean",
     "bundle": "gulp bundle",
-    "start": "gulp"
+    "start": "gulp",
+    "test": "tsc -project test/ && node built.test/app.js"
   }
 }

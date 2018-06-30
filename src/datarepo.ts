@@ -6,32 +6,32 @@
 */
 
 const cloneDeep = require('clone-deep');
-import * as DiffDeep from 'deep-diff';
+import { applyChange, diff } from 'deep-diff';
 
-export type DataDiff = any;
+export type DataDiff = deepDiff.IDiff;
 
-export type DataCloner = (value: any, cloner: DataCloner) => any;
+export type DataCloner = (value: any, deepclone: DataCloner) => any;
 
 export interface DataSource {
     readonly data: any;
     readonly cloner?: DataCloner;
 }
 
-export interface SyncedData {
+interface SyncedData {
     readonly source: DataSource;
-    latest?: any;
+    current: any;
 }
 
 export class DataRepo {
     private _synceddata: { [key: string]: SyncedData } = {};
 
     public addDataSource(name: string, source_: DataSource): boolean {
-        const data = this._synceddata[name];
-        if (!data) {
-            this._synceddata[name] = { source: source_ };
+        const synceddata = this._synceddata[name];
+        if (!synceddata) {
+            this._synceddata[name] = { source: source_, current: source_.data };
         }
 
-        return !!data;
+        return !!synceddata;
     }
 
     public removeDataSource(name: string): boolean {
@@ -39,38 +39,38 @@ export class DataRepo {
     }
 
     public currentlySynced(name: string): any | null {
-        const data = this._synceddata[name];
-        if (!data) {
+        const synceddata = this._synceddata[name];
+        if (!synceddata) {
             return null;
         }
 
-        return data.latest || null;
+        return synceddata.current || null;
     }
 
     public syncData(name: string): DataDiff[] | null {
-        const data = this._synceddata[name];
-        if (!data) {
+        const synceddata = this._synceddata[name];
+        if (!synceddata) {
             return null;
         }
 
-        const latest = data.source.cloner ? data.source.cloner(data.source, cloneDeep) : cloneDeep(data.source);
-        const diff_ = DiffDeep.diff(data.latest || {}, latest) || [];
+        const current = synceddata.source.cloner ? synceddata.source.cloner(synceddata.source.data, cloneDeep) : cloneDeep(synceddata.source.data);
+        const diff_ = diff(synceddata.current, current) || [];
 
-        data.latest = latest;
+        synceddata.current = current;
 
         return diff_;
     }
 
-    public applyDiffs(name: string, diff: DataDiff | DataDiff[]): boolean {
-        const data = this._synceddata[name];
-        if (!data) {
+    public applyDataDiffs(name: string, diff_: DataDiff | DataDiff[]): boolean {
+        const synceddata = this._synceddata[name];
+        if (!synceddata) {
             return false;
         }
 
-        if (Array.isArray(diff)) {
-            diff.forEach(diff_ => DiffDeep.applyChange(data.latest, data.latest, diff_));
+        if (Array.isArray(diff_)) {
+            diff_.forEach(item => applyChange(synceddata.current, synceddata.current, item));
         } else {
-            DiffDeep.applyChange(data.latest, data.latest, diff);
+            applyChange(synceddata.current, synceddata.current, diff_);
         }
 
         return true;

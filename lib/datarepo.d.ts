@@ -1,12 +1,9 @@
-export declare type DataDiff = any;
-export declare type DataCloner = (value: any, cloner: DataCloner) => any;
+/// <reference types="deep-diff" />
+export declare type DataDiff = deepDiff.IDiff;
+export declare type DataCloner = (value: any, deepclone: DataCloner) => any;
 export interface DataSource {
     readonly data: any;
     readonly cloner?: DataCloner;
-}
-export interface SyncedData {
-    readonly source: DataSource;
-    latest?: any;
 }
 export declare class DataRepo {
     private _synceddata;
@@ -14,5 +11,5 @@ export declare class DataRepo {
     removeDataSource(name: string): boolean;
     currentlySynced(name: string): any | null;
     syncData(name: string): DataDiff[] | null;
-    applyDiffs(name: string, diff: DataDiff | DataDiff[]): boolean;
+    applyDataDiffs(name: string, diff_: DataDiff | DataDiff[]): boolean;
 }

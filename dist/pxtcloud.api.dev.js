@@ -17,49 +17,49 @@ var Events;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var cloneDeep = require('clone-deep');
-var DiffDeep = require("deep-diff");
+var deep_diff_1 = require("deep-diff");
 var DataRepo = function () {
     function DataRepo() {
         this._synceddata = {};
     }
     DataRepo.prototype.addDataSource = function (name, source_) {
-        var data = this._synceddata[name];
-        if (!data) {
-            this._synceddata[name] = { source: source_ };
+        var synceddata = this._synceddata[name];
+        if (!synceddata) {
+            this._synceddata[name] = { source: source_, current: source_.data };
         }
-        return !!data;
+        return !!synceddata;
     };
     DataRepo.prototype.removeDataSource = function (name) {
         return delete this._synceddata[name];
     };
     DataRepo.prototype.currentlySynced = function (name) {
-        var data = this._synceddata[name];
-        if (!data) {
+        var synceddata = this._synceddata[name];
+        if (!synceddata) {
             return null;
         }
-        return data.latest || null;
+        return synceddata.current || null;
     };
     DataRepo.prototype.syncData = function (name) {
-        var data = this._synceddata[name];
-        if (!data) {
+        var synceddata = this._synceddata[name];
+        if (!synceddata) {
             return null;
         }
-        var latest = data.source.cloner ? data.source.cloner(data.source, cloneDeep) : cloneDeep(data.source);
-        var diff_ = DiffDeep.diff(data.latest || {}, latest) || [];
-        data.latest = latest;
+        var current = synceddata.source.cloner ? synceddata.source.cloner(synceddata.source.data, cloneDeep) : cloneDeep(synceddata.source.data);
+        var diff_ = deep_diff_1.diff(synceddata.current, current) || [];
+        synceddata.current = current;
         return diff_;
     };
-    DataRepo.prototype.applyDiffs = function (name, diff) {
-        var data = this._synceddata[name];
-        if (!data) {
+    DataRepo.prototype.applyDataDiffs = function (name, diff_) {
+        var synceddata = this._synceddata[name];
+        if (!synceddata) {
             return false;
         }
-        if (Array.isArray(diff)) {
-            diff.forEach(function (diff_) {
-                return DiffDeep.applyChange(data.latest, data.latest, diff_);
+        if (Array.isArray(diff_)) {
+            diff_.forEach(function (item) {
+                return deep_diff_1.applyChange(synceddata.current, synceddata.current, item);
             });
         } else {
-            DiffDeep.applyChange(data.latest, data.latest, diff);
+            deep_diff_1.applyChange(synceddata.current, synceddata.current, diff_);
         }
         return true;
     };

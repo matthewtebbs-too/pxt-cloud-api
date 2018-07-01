@@ -1944,20 +1944,31 @@ module.exports = cloneDeep;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-(function (root, factory) {
-  if (typeof define === 'function' && define.amd) {
-    // eslint-disable-line no-undef
-    define([], factory); // eslint-disable-line no-undef
-  } else if ((typeof module === 'undefined' ? 'undefined' : _typeof(module)) === 'object' && module.exports) {
-    module.exports = factory();
-  } else {
-    root.returnExports = factory();
-  }
+;(function (root, factory) {
+  // eslint-disable-line no-extra-semi
+  var deepDiff = factory(root);
   // eslint-disable-next-line no-undef
-})(typeof self !== 'undefined' ? self : undefined, function () {
-  var root = this;
-  var $conflict = root.DeepDiff;
-
+  if (typeof define === 'function' && define.amd) {
+    // AMD
+    define('DeepDiff', function () {
+      // eslint-disable-line no-undef
+      return deepDiff;
+    });
+  } else if ((typeof exports === 'undefined' ? 'undefined' : _typeof(exports)) === 'object') {
+    // Node.js
+    module.exports = deepDiff;
+  } else {
+    // Browser globals
+    var _deepdiff = root.DeepDiff;
+    deepDiff.noConflict = function () {
+      if (root.DeepDiff === deepDiff) {
+        root.DeepDiff = _deepdiff;
+      }
+      return deepDiff;
+    };
+    root.DeepDiff = deepDiff;
+  }
+})(undefined, function (root) {
   var validKinds = ['N', 'E', 'A', 'D'];
 
   // nodejs compatible on server side and in the browser.
@@ -2441,16 +2452,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     isConflict: {
       value: function value() {
         return typeof $conflict !== 'undefined';
-      },
-      enumerable: true
-    },
-    noConflict: {
-      value: function value() {
-        if ($conflict) {
-          root.DeepDiff = accumulateDiff;
-          $conflict = null;
-        }
-        return accumulateDiff;
       },
       enumerable: true
     }

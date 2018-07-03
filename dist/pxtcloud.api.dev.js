@@ -51,16 +51,15 @@ var DataRepo = (function () {
     DataRepo.prototype.applyDataDiffs = function (name, diff_) {
         var synceddata = this._synceddata[name];
         if (!synceddata) {
-            return false;
+            this._synceddata[name] = { current: {} };
         }
-        var current = synceddata.current || {};
+        var current = synceddata.current;
         if (Array.isArray(diff_)) {
             diff_.forEach(function (item) { return deep_diff_1.applyChange(synceddata.current, current, item); });
         }
         else {
             deep_diff_1.applyChange(synceddata.current, current, diff_);
         }
-        return true;
     };
     return DataRepo;
 }());

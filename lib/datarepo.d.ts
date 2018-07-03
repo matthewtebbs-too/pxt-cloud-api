@@ -11,5 +11,5 @@ export declare class DataRepo {
     removeDataSource(name: string): boolean;
     currentlySynced(name: string): any | null;
     syncData(name: string): DataDiff[] | null;
-    applyDataDiffs(name: string, diff_: DataDiff | DataDiff[]): boolean;
+    applyDataDiffs(name: string, diff_: DataDiff | DataDiff[]): void;
 }

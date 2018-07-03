@@ -9,6 +9,7 @@ var Events;
     Events["UserJoined"] = "user joined";
     Events["UserRemoveSelf"] = "remove self";
     Events["UserSelfInfo"] = "self info";
+    Events["WorldSyncDiff"] = "sync diff";
 })(Events = exports.Events || (exports.Events = {}));
 
 },{}],2:[function(require,module,exports){

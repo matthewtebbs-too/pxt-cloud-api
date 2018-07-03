@@ -14,6 +14,7 @@ export enum Events {
     UserJoined = 'user joined',
     UserRemoveSelf = 'remove self',
     UserSelfInfo = 'self info',
+    WorldSyncDiff = 'sync diff',
 }
 
 export interface CommonAPI {

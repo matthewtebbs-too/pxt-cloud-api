@@ -34,7 +34,7 @@ export interface WorldAPI extends CommonAPI {
     addDataSource(name: string, source_: DataSource): boolean;
     removeDataSource(name: string): boolean;
     syncData(name: string): PromiseLike<string[]>;
-    syncDiff(name: string, diff: any | any[]): PromiseLike<string[]>;
+    syncDiff(name: string, diff: any): PromiseLike<string[]>;
 }
 export interface PublicAPI {
     readonly chat: ChatAPI;

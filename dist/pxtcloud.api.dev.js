@@ -53,12 +53,11 @@ var DataRepo = (function () {
         if (!synceddata) {
             return false;
         }
-        var current = synceddata.current || {};
         if (Array.isArray(diff_)) {
-            diff_.forEach(function (item) { return deep_diff_1.applyChange(synceddata.current, current, item); });
+            diff_.forEach(function (item) { return deep_diff_1.applyChange(synceddata.current, synceddata.current, item); });
         }
         else {
-            deep_diff_1.applyChange(synceddata.current, current, diff_);
+            deep_diff_1.applyChange(synceddata.current, synceddata.current, diff_);
         }
         return true;
     };

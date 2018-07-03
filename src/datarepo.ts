@@ -18,8 +18,8 @@ export interface DataSource {
 }
 
 interface SyncedData {
-    readonly source: DataSource;
-    current: any;
+    source?: DataSource;
+    current?: any;
 }
 
 export class DataRepo {
@@ -49,7 +49,7 @@ export class DataRepo {
 
     public syncData(name: string): DataDiff[] | null {
         const synceddata = this._synceddata[name];
-        if (!synceddata) {
+        if (!synceddata || !synceddata.source) {
             return null;
         }
 
@@ -67,10 +67,12 @@ export class DataRepo {
             return false;
         }
 
+        const current = synceddata.current || {};
+
         if (Array.isArray(diff_)) {
-            diff_.forEach(item => applyChange(synceddata.current, synceddata.current, item));
+            diff_.forEach(item => applyChange(synceddata.current, current, item));
         } else {
-            applyChange(synceddata.current, synceddata.current, diff_);
+            applyChange(synceddata.current, current, diff_);
         }
 
         return true;

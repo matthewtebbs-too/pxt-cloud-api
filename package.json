@@ -24,7 +24,7 @@
   "dependencies": {
     "@types/deep-diff": "0.0.31",
     "@types/node": "^8.10.20",
-    "clone-deep": "^4.0.0",
+    "clone-deep": "^3.0.1",
     "debug": "^3.1.0",
     "deep-diff": "^1.0.1",
     "dotenv": "^5.0.1",
@@ -32,9 +32,6 @@
     "supports-color": "^5.4.0"
   },
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-preset-env": "^1.7.0",
-    "babelify": "^8.0.0",
     "browserify": "^16.2.2",
     "del": "^3.0.0",
     "glob": "^7.1.2",

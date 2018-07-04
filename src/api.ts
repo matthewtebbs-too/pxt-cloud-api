@@ -14,7 +14,7 @@ export enum Events {
     UserJoined = 'user joined',
     UserRemoveSelf = 'remove self',
     UserSelfInfo = 'self info',
-    WorldSyncDiff = 'sync diff',
+    WorldSyncDataDiff = 'sync data diff',
 }
 
 export interface CommonAPI {
@@ -50,8 +50,8 @@ export interface ChatAPI extends CommonAPI {
 export interface WorldAPI extends CommonAPI {
     addDataSource(name: string, source_?: DataSource): boolean;
     removeDataSource(name: string): boolean;
-    syncData(name: string): PromiseLike<string[]>;
-    syncDiff(name: string, diff: any /* deep-diff's IDiff */): PromiseLike<string[]>;
+    syncDataSource(name: string): PromiseLike<string[]>;
+    syncDataDiff(name: string, diff: any /* deep-diff's IDiff */): PromiseLike<string[]>;
 }
 
 export interface PublicAPI {

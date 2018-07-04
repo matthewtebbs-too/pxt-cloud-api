@@ -47,7 +47,7 @@ export class DataRepo {
         return synceddata.current || null;
     }
 
-    public syncData(name: string): DataDiff[] | null {
+    public syncDataSource(name: string): DataDiff[] | null {
         const synceddata = this._synceddata[name];
         if (!synceddata || !synceddata.source) {
             return null;
@@ -61,7 +61,7 @@ export class DataRepo {
         return diff_;
     }
 
-    public applyDataDiffs(name: string, diff_: DataDiff | DataDiff[]) {
+    public syncDataDiff(name: string, diff_: DataDiff | DataDiff[]) {
         const synceddata = this._synceddata[name];
         if (!synceddata) {
             this._synceddata[name] = { current: {} };

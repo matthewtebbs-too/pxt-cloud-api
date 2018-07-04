@@ -21,7 +21,7 @@ function test(datarepo: API.DataRepo) {
 
     const accumdiffs: API.DataDiff[] = [];
     const localSyncData = () => {
-        const diffs = datarepo.syncData(name);
+        const diffs = datarepo.syncDataSource(name);
         if (diffs && diffs.length > 0) {
             accumdiffs.push(...diffs);
             debug(diffs);
@@ -38,7 +38,7 @@ function test(datarepo: API.DataRepo) {
 
     localSyncData();
 
-    if (datarepo.applyDataDiffs(nameclone, accumdiffs)) {
+    if (datarepo.syncDataDiff(nameclone, accumdiffs)) {
         debug(testdataClone);
     } else {
         debug('failed DataRepo.applyDataDiffs');

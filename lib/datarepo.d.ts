@@ -1,5 +1,5 @@
-/// <reference types="deep-diff" />
-export declare type DataDiff = deepDiff.IDiff;
+/// <reference types="node" />
+export declare type DataDiff = Buffer;
 export declare type DataCloner = (value: any, deepclone: DataCloner) => any;
 export interface DataSource {
     readonly data: any;

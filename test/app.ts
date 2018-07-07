@@ -38,11 +38,9 @@ function test(datarepo: API.DataRepo) {
 
     localSyncData();
 
-    if (datarepo.syncDataDiff(nameclone, accumdiffs)) {
-        debug(testdataClone);
-    } else {
-        debug('failed DataRepo.applyDataDiffs');
-    }
+    datarepo.syncDataDiff(nameclone, accumdiffs);
+
+    debug(testdataClone);
 }
 
 test(new API.DataRepo());

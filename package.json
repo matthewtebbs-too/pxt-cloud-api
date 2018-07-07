@@ -23,12 +23,14 @@
   "homepage": "https://github.com/muddytummy/pxt-cloud-api#readme",
   "dependencies": {
     "@types/deep-diff": "0.0.31",
+    "@types/msgpack-lite": "^0.1.6",
     "@types/node": "^8.10.20",
     "clone-deep": "^3.0.1",
     "debug": "^3.1.0",
     "deep-diff": "^1.0.1",
     "dotenv": "^5.0.1",
     "install": "^0.11.2",
+    "msgpack-lite": "^0.1.26",
     "supports-color": "^5.4.0"
   },
   "devDependencies": {

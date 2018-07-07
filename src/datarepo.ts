@@ -8,7 +8,9 @@
 const cloneDeep = require('clone-deep');
 import { applyChange, diff } from 'deep-diff';
 
-export type DataDiff = deepDiff.IDiff;
+import * as MsgPack from 'msgpack-lite';
+
+export type DataDiff = Buffer; /* packed (opaque) deep-diff's IDiff structure */
 
 export type DataCloner = (value: any, deepclone: DataCloner) => any;
 
@@ -58,7 +60,7 @@ export class DataRepo {
 
         synceddata.current = current;
 
-        return diff_;
+        return diff_.map(d => MsgPack.encode(d));
     }
 
     public syncDataDiff(name: string, diff_: DataDiff | DataDiff[]) {
@@ -70,9 +72,9 @@ export class DataRepo {
         const current = synceddata.current;
 
         if (Array.isArray(diff_)) {
-            diff_.forEach(item => applyChange(synceddata.current, current, item));
+            diff_.forEach(d => applyChange(synceddata.current, current, MsgPack.decode(d)));
         } else {
-            applyChange(synceddata.current, current, diff_);
+            applyChange(synceddata.current, current, MsgPack.decode(diff_));
         }
     }
 }

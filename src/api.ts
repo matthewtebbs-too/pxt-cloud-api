@@ -5,7 +5,7 @@
     Copyright (c) 2018 MuddyTummy Software LLC
 */
 
-import { DataSource } from './datarepo';
+import { DataDiff, DataSource } from './datarepo';
 
 export enum Events {
     ChatNewMessage = 'new message',
@@ -50,8 +50,8 @@ export interface ChatAPI extends CommonAPI {
 export interface WorldAPI extends CommonAPI {
     addDataSource(name: string, source_?: DataSource): boolean;
     removeDataSource(name: string): boolean;
-    syncDataSource(name: string): PromiseLike<string[]>;
-    syncDataDiff(name: string, diff: any /* deep-diff's IDiff */): PromiseLike<string[]>;
+    syncDataSource(name: string): PromiseLike<string>;
+    syncDataDiff(name: string, diff: DataDiff | DataDiff[]): PromiseLike<string>;
 }
 
 export interface PublicAPI {

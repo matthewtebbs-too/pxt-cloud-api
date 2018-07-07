@@ -9,7 +9,7 @@ export declare class DataRepo {
     private _synceddata;
     addDataSource(name: string, source_: DataSource): boolean;
     removeDataSource(name: string): boolean;
-    currentlySynced(name: string): any | null;
+    currentlySynced(name: string): any;
     syncDataSource(name: string): DataDiff[] | null;
     syncDataDiff(name: string, diff_: DataDiff[]): void;
 }

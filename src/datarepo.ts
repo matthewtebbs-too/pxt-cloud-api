@@ -40,7 +40,7 @@ export class DataRepo {
         return delete this._synceddata[name];
     }
 
-    public currentlySynced(name: string): any | null {
+    public currentlySynced(name: string): any {
         const synceddata = this._synceddata[name];
         if (!synceddata) {
             return null;

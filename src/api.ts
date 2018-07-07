@@ -50,7 +50,7 @@ export interface ChatAPI extends CommonAPI {
 export interface WorldAPI extends CommonAPI {
     addDataSource(name: string, source_?: DataSource): boolean;
     removeDataSource(name: string): boolean;
-    currentlySynced(name: string): any | null;
+    currentlySynced(name: string): any;
     syncDataSource(name: string): PromiseLike<string[]>;
     syncDataDiff(name: string, diff: DataDiff[]): PromiseLike<string[]>;
 }

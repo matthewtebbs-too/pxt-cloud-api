@@ -1,4 +1,4 @@
-import { DataDiff, DataSource } from './datarepo';
+/// <reference types="node" />
 export declare enum Events {
     ChatNewMessage = "new message",
     UserAddSelf = "add self",
@@ -30,12 +30,20 @@ export interface MessageData {
 export interface ChatAPI extends CommonAPI {
     newMessage(msg: string | MessageData): PromiseLike<void>;
 }
-export interface WorldAPI extends CommonAPI {
+export declare type DataDiff = Buffer;
+export declare type DataCloner = (value: any, deepclone: DataCloner) => any;
+export interface DataSource {
+    readonly data: any;
+    readonly cloner?: DataCloner;
+}
+export interface DataSyncAPI {
     addDataSource(name: string, source_?: DataSource): boolean;
     removeDataSource(name: string): boolean;
     currentlySynced(name: string): any;
-    syncDataSource(name: string): PromiseLike<string[]>;
-    syncDataDiff(name: string, diff: DataDiff[]): PromiseLike<string[]>;
+    syncDataSource(name: string): PromiseLike<string[]> | DataDiff[] | null;
+    syncDataDiff(name: string, diff: DataDiff[]): PromiseLike<string[]> | DataDiff[] | null;
+}
+export interface WorldAPI extends DataSyncAPI, CommonAPI {
 }
 export interface PublicAPI {
     readonly chat: ChatAPI;

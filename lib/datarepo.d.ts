@@ -1,15 +1,9 @@
-/// <reference types="node" />
-export declare type DataDiff = Buffer;
-export declare type DataCloner = (value: any, deepclone: DataCloner) => any;
-export interface DataSource {
-    readonly data: any;
-    readonly cloner?: DataCloner;
-}
-export declare class DataRepo {
+import * as API from './api';
+export declare class DataRepo implements API.DataSyncAPI {
     private _synceddata;
-    addDataSource(name: string, source_: DataSource): boolean;
+    addDataSource(name: string, source_: API.DataSource): boolean;
     removeDataSource(name: string): boolean;
     currentlySynced(name: string): any;
-    syncDataSource(name: string): DataDiff[] | null;
-    syncDataDiff(name: string, diff_: DataDiff[]): void;
+    syncDataSource(name: string): API.DataDiff[] | null;
+    syncDataDiff(name: string, diff_: API.DataDiff[]): API.DataDiff[] | null;
 }

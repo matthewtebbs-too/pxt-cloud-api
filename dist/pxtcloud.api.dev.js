@@ -56,6 +56,7 @@ var DataRepo = (function () {
         }
         var current = synceddata.current;
         diff_.forEach(function (d) { return deep_diff_1.applyChange(synceddata.current, current, MsgPack.decode(d)); });
+        return diff_;
     };
     return DataRepo;
 }());

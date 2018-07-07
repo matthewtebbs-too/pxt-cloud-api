@@ -10,24 +10,17 @@ import { applyChange, diff } from 'deep-diff';
 
 import * as MsgPack from 'msgpack-lite';
 
-export type DataDiff = Buffer; /* packed (opaque) deep-diff's IDiff structure */
-
-export type DataCloner = (value: any, deepclone: DataCloner) => any;
-
-export interface DataSource {
-    readonly data: any;
-    readonly cloner?: DataCloner;
-}
+import * as API from './api';
 
 interface SyncedData {
-    source?: DataSource;
+    source?: API.DataSource;
     current?: any;
 }
 
-export class DataRepo {
+export class DataRepo implements API.DataSyncAPI {
     private _synceddata: { [key: string]: SyncedData } = {};
 
-    public addDataSource(name: string, source_: DataSource): boolean {
+    public addDataSource(name: string, source_: API.DataSource): boolean {
         const synceddata = this._synceddata[name];
         if (!synceddata) {
             this._synceddata[name] = { source: source_, current: source_.data };
@@ -49,7 +42,7 @@ export class DataRepo {
         return synceddata.current || null;
     }
 
-    public syncDataSource(name: string): DataDiff[] | null {
+    public syncDataSource(name: string): API.DataDiff[] | null {
         const synceddata = this._synceddata[name];
         if (!synceddata || !synceddata.source) {
             return null;
@@ -63,7 +56,7 @@ export class DataRepo {
         return diff_.map(d => MsgPack.encode(d));
     }
 
-    public syncDataDiff(name: string, diff_: DataDiff[]) {
+    public syncDataDiff(name: string, diff_: API.DataDiff[]): API.DataDiff[] | null {
         let synceddata = this._synceddata[name];
         if (!synceddata) {
             synceddata = this._synceddata[name] = { current: {} };
@@ -72,5 +65,7 @@ export class DataRepo {
         const current = synceddata.current;
 
         diff_.forEach(d => applyChange(synceddata.current, current, MsgPack.decode(d)));
+
+        return diff_;
     }
 }

@@ -64,9 +64,9 @@ export class DataRepo {
     }
 
     public syncDataDiff(name: string, diff_: DataDiff[]) {
-        const synceddata = this._synceddata[name];
+        let synceddata = this._synceddata[name];
         if (!synceddata) {
-            this._synceddata[name] = { current: {} };
+            synceddata = this._synceddata[name] = { current: {} };
         }
 
         const current = synceddata.current;

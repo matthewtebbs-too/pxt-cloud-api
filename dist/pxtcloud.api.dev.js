@@ -52,7 +52,7 @@ var DataRepo = (function () {
     DataRepo.prototype.syncDataDiff = function (name, diff_) {
         var synceddata = this._synceddata[name];
         if (!synceddata) {
-            this._synceddata[name] = { current: {} };
+            synceddata = this._synceddata[name] = { current: {} };
         }
         var current = synceddata.current;
         diff_.forEach(function (d) { return deep_diff_1.applyChange(synceddata.current, current, MsgPack.decode(d)); });

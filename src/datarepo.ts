@@ -63,7 +63,7 @@ export class DataRepo {
         return diff_.map(d => MsgPack.encode(d));
     }
 
-    public syncDataDiff(name: string, diff_: DataDiff | DataDiff[]) {
+    public syncDataDiff(name: string, diff_: DataDiff[]) {
         const synceddata = this._synceddata[name];
         if (!synceddata) {
             this._synceddata[name] = { current: {} };
@@ -71,10 +71,6 @@ export class DataRepo {
 
         const current = synceddata.current;
 
-        if (Array.isArray(diff_)) {
-            diff_.forEach(d => applyChange(synceddata.current, current, MsgPack.decode(d)));
-        } else {
-            applyChange(synceddata.current, current, MsgPack.decode(diff_));
-        }
+        diff_.forEach(d => applyChange(synceddata.current, current, MsgPack.decode(d)));
     }
 }

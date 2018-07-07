@@ -55,12 +55,7 @@ var DataRepo = (function () {
             this._synceddata[name] = { current: {} };
         }
         var current = synceddata.current;
-        if (Array.isArray(diff_)) {
-            diff_.forEach(function (d) { return deep_diff_1.applyChange(synceddata.current, current, MsgPack.decode(d)); });
-        }
-        else {
-            deep_diff_1.applyChange(synceddata.current, current, MsgPack.decode(diff_));
-        }
+        diff_.forEach(function (d) { return deep_diff_1.applyChange(synceddata.current, current, MsgPack.decode(d)); });
     };
     return DataRepo;
 }());

@@ -1,7 +1,7 @@
 import * as API from './api';
 export declare class DataRepo implements API.DataSyncAPI {
     private _synceddata;
-    addDataSource(name: string, source_: API.DataSource): boolean;
+    addDataSource(name: string, source: API.DataSource): boolean;
     removeDataSource(name: string): boolean;
     currentlySynced(name: string): any;
     syncDataSource(name: string): API.DataDiff[] | null;

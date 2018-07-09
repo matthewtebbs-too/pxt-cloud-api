@@ -20,10 +20,10 @@ interface SyncedData {
 export class DataRepo implements API.DataSyncAPI {
     private _synceddata: { [key: string]: SyncedData } = {};
 
-    public addDataSource(name: string, source_: API.DataSource): boolean {
+    public addDataSource(name: string, source: API.DataSource): boolean {
         const synceddata = this._synceddata[name];
         if (!synceddata) {
-            this._synceddata[name] = { source: source_, current: source_.data };
+            this._synceddata[name] = { source, current: source.data };
         }
 
         return !!synceddata;

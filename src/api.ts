@@ -58,8 +58,8 @@ export interface DataSyncAPI {
     addDataSource(name: string, source_?: DataSource): boolean;
     removeDataSource(name: string): boolean;
     currentlySynced(name: string): any;
-    syncDataSource(name: string): PromiseLike<string[]> | DataDiff[] | null;
-    syncDataDiff(name: string, diff: DataDiff[]): PromiseLike<string[]> | DataDiff[] | null;
+    syncDataSource(name: string): PromiseLike<void> | DataDiff[] | null;
+    syncDataDiff(name: string, diff: DataDiff[]): PromiseLike<void> | DataDiff[] | null;
 }
 
 export interface WorldAPI extends DataSyncAPI, CommonAPI {

@@ -58,8 +58,8 @@ export interface WorldAPI extends CommonAPI {
     addDataSource(name: string, source_?: DataSource): boolean;
     removeDataSource(name: string): boolean;
     currentlySynced(name: string): PromiseLike<object | undefined>;
-    syncDataSource(name: string): PromiseLike<boolean>;
-    syncDataDiff(name: string, diff: DataDiff[]): PromiseLike<boolean>;
+    syncDataSource(name: string): PromiseLike<void>;
+    syncDataDiff(name: string, diff: DataDiff[]): PromiseLike<void>;
 }
 
 export interface PublicAPI {

@@ -14,10 +14,14 @@ import * as API from './api';
 
 interface SyncedData {
     source?: API.DataSource;
-    current?: any;
+    current: object;
 }
 
-export class DataRepo implements API.DataSyncAPI {
+export class DataRepo {
+    public static applyDataDiff(current: object, diff_: API.DataDiff[]) {
+        diff_.forEach(d => applyChange(current, current, MsgPack.decode(d)));
+    }
+
     private _synceddata: { [key: string]: SyncedData } = {};
 
     public addDataSource(name: string, source: API.DataSource): boolean {
@@ -33,7 +37,7 @@ export class DataRepo implements API.DataSyncAPI {
         return delete this._synceddata[name];
     }
 
-    public currentlySynced(name: string): any {
+    public currentlySynced(name: string): object | null {
         const synceddata = this._synceddata[name];
         if (!synceddata) {
             return null;
@@ -42,7 +46,7 @@ export class DataRepo implements API.DataSyncAPI {
         return synceddata.current || null;
     }
 
-    public syncDataSource(name: string): API.DataDiff[] | null {
+    public calcDataDiff(name: string): API.DataDiff[] | null {
         const synceddata = this._synceddata[name];
         if (!synceddata || !synceddata.source) {
             return null;
@@ -56,16 +60,12 @@ export class DataRepo implements API.DataSyncAPI {
         return diff_.map(d => MsgPack.encode(d));
     }
 
-    public syncDataDiff(name: string, diff_: API.DataDiff[]): API.DataDiff[] | null {
+    public applyDataDiff(name: string, diff_: API.DataDiff[]) {
         let synceddata = this._synceddata[name];
         if (!synceddata) {
             synceddata = this._synceddata[name] = { current: {} };
         }
 
-        const current = synceddata.current;
-
-        diff_.forEach(d => applyChange(synceddata.current, current, MsgPack.decode(d)));
-
-        return diff_;
+        DataRepo.applyDataDiff(synceddata.current, diff_);
     }
 }

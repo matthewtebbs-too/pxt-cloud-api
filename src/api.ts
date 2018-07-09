@@ -42,27 +42,24 @@ export interface MessageData {
 }
 
 export interface ChatAPI extends CommonAPI {
-    newMessage(msg: string | MessageData): PromiseLike<void>;
+    newMessage(msg: string | MessageData): PromiseLike<boolean>;
 }
 
 export type DataDiff = Buffer; /* packed (opaque) deep-diff's IDiff structure */
 
-export type DataCloner = (value: any, deepclone: DataCloner) => any;
+export type DataCloner = (value: object, deepclone: DataCloner) => object;
 
 export interface DataSource {
-    readonly data: any;
+    readonly data: object;
     readonly cloner?: DataCloner;
 }
 
-export interface DataSyncAPI {
+export interface WorldAPI extends CommonAPI {
     addDataSource(name: string, source_?: DataSource): boolean;
     removeDataSource(name: string): boolean;
-    currentlySynced(name: string): any;
-    syncDataSource(name: string): PromiseLike<void> | DataDiff[] | null;
-    syncDataDiff(name: string, diff: DataDiff[]): PromiseLike<void> | DataDiff[] | null;
-}
-
-export interface WorldAPI extends DataSyncAPI, CommonAPI {
+    currentlySynced(name: string): PromiseLike<boolean>;
+    syncDataSource(name: string): PromiseLike<boolean>;
+    syncDataDiff(name: string, diff: DataDiff[]): PromiseLike<boolean>;
 }
 
 export interface PublicAPI {

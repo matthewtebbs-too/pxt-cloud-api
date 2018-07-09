@@ -24,6 +24,7 @@ var DataRepo = (function () {
     }
     DataRepo.applyDataDiff = function (current, diff_) {
         diff_.forEach(function (d) { return deep_diff_1.applyChange(current, current, MsgPack.decode(d)); });
+        return current;
     };
     DataRepo.prototype.addDataSource = function (name, source) {
         var synceddata = this._synceddata[name];

@@ -18,8 +18,10 @@ interface SyncedData {
 }
 
 export class DataRepo {
-    public static applyDataDiff(current: object, diff_: API.DataDiff[]) {
+    public static applyDataDiff(current: object, diff_: API.DataDiff[]): object {
         diff_.forEach(d => applyChange(current, current, MsgPack.decode(d)));
+
+        return current;
     }
 
     private _synceddata: { [key: string]: SyncedData } = {};

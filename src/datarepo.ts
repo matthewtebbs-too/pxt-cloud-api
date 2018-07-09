@@ -37,19 +37,19 @@ export class DataRepo {
         return delete this._synceddata[name];
     }
 
-    public currentlySynced(name: string): object | null {
+    public currentlySynced(name: string): object | undefined {
         const synceddata = this._synceddata[name];
-        if (!synceddata) {
-            return null;
+        if (!synceddata || !synceddata.current) {
+            return undefined;
         }
 
-        return synceddata.current || null;
+        return synceddata.current;
     }
 
-    public calcDataDiff(name: string): API.DataDiff[] | null {
+    public calcDataDiff(name: string): API.DataDiff[] | undefined {
         const synceddata = this._synceddata[name];
         if (!synceddata || !synceddata.source) {
-            return null;
+            return undefined;
         }
 
         const current = synceddata.source.cloner ? synceddata.source.cloner(synceddata.source.data, cloneDeep) : cloneDeep(synceddata.source.data);

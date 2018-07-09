@@ -4,7 +4,7 @@ export declare class DataRepo {
     private _synceddata;
     addDataSource(name: string, source: API.DataSource): boolean;
     removeDataSource(name: string): boolean;
-    currentlySynced(name: string): object | null;
-    calcDataDiff(name: string): API.DataDiff[] | null;
+    currentlySynced(name: string): object | undefined;
+    calcDataDiff(name: string): API.DataDiff[] | undefined;
     applyDataDiff(name: string, diff_: API.DataDiff[]): void;
 }

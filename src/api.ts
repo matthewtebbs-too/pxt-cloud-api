@@ -57,7 +57,7 @@ export interface DataSource {
 export interface WorldAPI extends CommonAPI {
     addDataSource(name: string, source_?: DataSource): boolean;
     removeDataSource(name: string): boolean;
-    currentlySynced(name: string): PromiseLike<boolean>;
+    currentlySynced(name: string): PromiseLike<object | undefined>;
     syncDataSource(name: string): PromiseLike<boolean>;
     syncDataDiff(name: string, diff: DataDiff[]): PromiseLike<boolean>;
 }

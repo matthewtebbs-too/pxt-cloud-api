@@ -13,8 +13,8 @@ import * as MsgPack from 'msgpack-lite';
 import * as API from './api';
 
 interface SyncedData {
-    source?: API.DataSource;
     current: object;
+    source?: API.DataSource;
 }
 
 export class DataRepo {
@@ -24,12 +24,16 @@ export class DataRepo {
         return current;
     }
 
+    protected static _cloneSourceData(source: API.DataSource): object {
+        return source.cloner ? source.cloner(source.data, cloneDeep) : cloneDeep(source.data);
+    }
+
     private _synceddata: { [key: string]: SyncedData } = {};
 
     public addDataSource(name: string, source: API.DataSource): boolean {
         const synceddata = this._synceddata[name];
         if (!synceddata) {
-            this._synceddata[name] = { source, current: source.data };
+            this._synceddata[name] = { source, current: DataRepo._cloneSourceData(source) };
         }
 
         return !!synceddata;
@@ -54,7 +58,7 @@ export class DataRepo {
             return undefined;
         }
 
-        const current = synceddata.source.cloner ? synceddata.source.cloner(synceddata.source.data, cloneDeep) : cloneDeep(synceddata.source.data);
+        const current = DataRepo._cloneSourceData(synceddata.source);
         const diff_ = diff(synceddata.current, current) || [];
 
         synceddata.current = current;

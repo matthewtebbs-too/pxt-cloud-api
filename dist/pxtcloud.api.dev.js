@@ -26,10 +26,13 @@ var DataRepo = (function () {
         diff_.forEach(function (d) { return deep_diff_1.applyChange(current, current, MsgPack.decode(d)); });
         return current;
     };
+    DataRepo._cloneSourceData = function (source) {
+        return source.cloner ? source.cloner(source.data, cloneDeep) : cloneDeep(source.data);
+    };
     DataRepo.prototype.addDataSource = function (name, source) {
         var synceddata = this._synceddata[name];
         if (!synceddata) {
-            this._synceddata[name] = { source: source, current: source.data };
+            this._synceddata[name] = { source: source, current: DataRepo._cloneSourceData(source) };
         }
         return !!synceddata;
     };
@@ -48,7 +51,7 @@ var DataRepo = (function () {
         if (!synceddata || !synceddata.source) {
             return undefined;
         }
-        var current = synceddata.source.cloner ? synceddata.source.cloner(synceddata.source.data, cloneDeep) : cloneDeep(synceddata.source.data);
+        var current = DataRepo._cloneSourceData(synceddata.source);
         var diff_ = deep_diff_1.diff(synceddata.current, current) || [];
         synceddata.current = current;
         return diff_.map(function (d) { return MsgPack.encode(d); });

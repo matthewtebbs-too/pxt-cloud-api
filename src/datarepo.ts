@@ -24,6 +24,12 @@ export class DataRepo {
         return current;
     }
 
+    public static calcDataDiff(lhs: object, rhs: object): API.DataDiff[] {
+        const diff_ = diff(lhs, rhs) || [];
+
+        return diff_.map(d => MsgPack.encode(d));
+    }
+
     protected static _cloneSourceData(source: API.DataSource): object {
         return source.cloner ? source.cloner(source.data, cloneDeep) : cloneDeep(source.data);
     }
@@ -59,11 +65,11 @@ export class DataRepo {
         }
 
         const current = DataRepo._cloneSourceData(synceddata.source);
-        const diff_ = diff(synceddata.current, current) || [];
+        const diff_ = DataRepo.calcDataDiff(synceddata.current, current);
 
         synceddata.current = current;
 
-        return diff_.map(d => MsgPack.encode(d));
+        return diff_;
     }
 
     public applyDataDiff(name: string, diff_: API.DataDiff[]) {

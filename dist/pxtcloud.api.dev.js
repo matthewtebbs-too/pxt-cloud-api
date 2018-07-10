@@ -22,13 +22,19 @@ var DataRepo = (function () {
     function DataRepo() {
         this._synceddata = {};
     }
+    DataRepo.encode = function (data) {
+        return MsgPack.encode(data);
+    };
+    DataRepo.decode = function (buffer) {
+        return MsgPack.decode(buffer);
+    };
     DataRepo.applyDataDiff = function (current, diff_) {
-        diff_.forEach(function (d) { return deep_diff_1.applyChange(current, current, MsgPack.decode(d)); });
+        diff_.forEach(function (d) { return deep_diff_1.applyChange(current, current, DataRepo.decode(d)); });
         return current;
     };
     DataRepo.calcDataDiff = function (lhs, rhs) {
         var diff_ = deep_diff_1.diff(lhs, rhs) || [];
-        return diff_.map(function (d) { return MsgPack.encode(d); });
+        return diff_.map(function (d) { return DataRepo.encode(d); });
     };
     DataRepo._cloneSourceData = function (source) {
         return source.cloner ? source.cloner(source.data, cloneDeep) : cloneDeep(source.data);

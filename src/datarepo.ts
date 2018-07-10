@@ -18,8 +18,16 @@ interface SyncedData {
 }
 
 export class DataRepo {
+    public static encode(data: any): Buffer {
+        return MsgPack.encode(data);
+    }
+
+    public static decode(buffer: Buffer): any {
+        return MsgPack.decode(buffer);
+    }
+
     public static applyDataDiff(current: object, diff_: API.DataDiff[]): object {
-        diff_.forEach(d => applyChange(current, current, MsgPack.decode(d)));
+        diff_.forEach(d => applyChange(current, current, DataRepo.decode(d)));
 
         return current;
     }
@@ -27,7 +35,7 @@ export class DataRepo {
     public static calcDataDiff(lhs: object, rhs: object): API.DataDiff[] {
         const diff_ = diff(lhs, rhs) || [];
 
-        return diff_.map(d => MsgPack.encode(d));
+        return diff_.map(d => DataRepo.encode(d));
     }
 
     protected static _cloneSourceData(source: API.DataSource): object {

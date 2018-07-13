@@ -7,11 +7,14 @@
 
 export enum Events {
     ChatNewMessage = 'new message',
+
     UserAddSelf = 'add self',
     UserLeft = 'user left',
     UserJoined = 'user joined',
     UserRemoveSelf = 'remove self',
     UserSelfInfo = 'self info',
+
+    WorldSyncData = 'sync data',
     WorldSyncDataDiff = 'sync data diff',
 }
 

@@ -6,6 +6,7 @@ export declare enum Events {
     UserJoined = "user joined",
     UserRemoveSelf = "remove self",
     UserSelfInfo = "self info",
+    WorldSyncData = "sync data",
     WorldSyncDataDiff = "sync data diff"
 }
 export interface CommonAPI {

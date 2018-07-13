@@ -24,7 +24,7 @@
   "dependencies": {
     "@types/deep-diff": "0.0.31",
     "@types/msgpack-lite": "^0.1.6",
-    "@types/node": "^8.10.20",
+    "@types/node": "^8.10.21",
     "clone-deep": "^3.0.1",
     "debug": "^3.1.0",
     "deep-diff": "^1.0.1",
@@ -48,7 +48,7 @@
     "rollup-stream": "^1.24.1",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2",
-    "uglify-js": "^3.4.3",
+    "uglify-js": "^3.4.4",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
   },

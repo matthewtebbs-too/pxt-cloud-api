@@ -45,12 +45,17 @@ export class DataRepo {
     private _synceddata: { [key: string]: SyncedData } = {};
 
     public addDataSource(name: string, source: API.DataSource): boolean {
-        const synceddata = this._synceddata[name];
-        if (!synceddata) {
-            this._synceddata[name] = { source, current: DataRepo._cloneSourceData(source) };
+        let synceddata = this._synceddata[name];
+
+        const exists = !!synceddata;
+
+        if (!exists) {
+            synceddata = this._synceddata[name] = { current: DataRepo._cloneSourceData(source) };
         }
 
-        return !!synceddata;
+        synceddata.source = source;
+
+        return exists;
     }
 
     public isDataSource(name: string): boolean {

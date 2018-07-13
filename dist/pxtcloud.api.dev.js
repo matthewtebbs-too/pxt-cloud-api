@@ -42,10 +42,12 @@ var DataRepo = (function () {
     };
     DataRepo.prototype.addDataSource = function (name, source) {
         var synceddata = this._synceddata[name];
-        if (!synceddata) {
-            this._synceddata[name] = { source: source, current: DataRepo._cloneSourceData(source) };
+        var exists = !!synceddata;
+        if (!exists) {
+            synceddata = this._synceddata[name] = { current: DataRepo._cloneSourceData(source) };
         }
-        return !!synceddata;
+        synceddata.source = source;
+        return exists;
     };
     DataRepo.prototype.isDataSource = function (name) {
         return !!this._synceddata[name];

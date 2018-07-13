@@ -47,6 +47,9 @@ var DataRepo = (function () {
         }
         return !!synceddata;
     };
+    DataRepo.prototype.isDataSource = function (name) {
+        return !!this._synceddata[name];
+    };
     DataRepo.prototype.removeDataSource = function (name) {
         return delete this._synceddata[name];
     };

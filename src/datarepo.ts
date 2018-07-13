@@ -53,6 +53,10 @@ export class DataRepo {
         return !!synceddata;
     }
 
+    public isDataSource(name: string): boolean {
+        return !!this._synceddata[name];
+    }
+
     public removeDataSource(name: string): boolean {
         return delete this._synceddata[name];
     }

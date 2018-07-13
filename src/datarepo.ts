@@ -61,7 +61,7 @@ export class DataRepo {
         return delete this._synceddata[name];
     }
 
-    public currentlySynced(name: string): object | undefined {
+    public getData(name: string): object | undefined {
         const synceddata = this._synceddata[name];
         if (!synceddata || !synceddata.current) {
             return undefined;
@@ -82,6 +82,15 @@ export class DataRepo {
         synceddata.current = current;
 
         return diff_;
+    }
+
+    public setData(name: string, data: object) {
+        let synceddata = this._synceddata[name];
+        if (synceddata) {
+            synceddata.current = data;
+        } else {
+            synceddata = this._synceddata[name] = { current: data };
+        }
     }
 
     public applyDataDiff(name: string, diff_: API.DataDiff[]) {

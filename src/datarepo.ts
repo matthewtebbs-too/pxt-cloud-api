@@ -13,8 +13,8 @@ import * as MsgPack from 'msgpack-lite';
 import * as API from './api';
 
 interface SyncedData {
-    current: object;
-    source?: API.DataSource;
+    source: API.DataSource;
+    dataRecent?: object;
 }
 
 export class DataRepo {
@@ -44,22 +44,23 @@ export class DataRepo {
 
     private _synceddata: { [key: string]: SyncedData } = {};
 
-    public addDataSource(name: string, source: API.DataSource): boolean {
-        let synceddata = this._synceddata[name];
-
-        const exists = !!synceddata;
-
-        if (!exists) {
-            synceddata = this._synceddata[name] = { current: DataRepo._cloneSourceData(source) };
-        }
-
-        synceddata.source = source;
-
-        return exists;
-    }
-
     public isDataSource(name: string): boolean {
         return !!this._synceddata[name];
+    }
+
+    public setDataSource(name: string, source: API.DataSource): boolean {
+        const data = this.getData(name);
+
+        const synceddata = this._synceddata[name];
+        if (!synceddata) {
+            this._synceddata[name] = { source };
+        }
+
+        if (data) {
+            this.setData(name, data);
+        }
+
+        return !!synceddata;
     }
 
     public removeDataSource(name: string): boolean {
@@ -68,42 +69,35 @@ export class DataRepo {
 
     public getData(name: string): object | undefined {
         const synceddata = this._synceddata[name];
-        if (!synceddata || !synceddata.current) {
+        if (!synceddata) {
             return undefined;
         }
 
-        return synceddata.current;
+        return synceddata.source.data;
     }
 
     public calcDataDiff(name: string): API.DataDiff[] | undefined {
         const synceddata = this._synceddata[name];
-        if (!synceddata || !synceddata.source) {
+        if (!synceddata) {
             return undefined;
         }
 
-        const current = DataRepo._cloneSourceData(synceddata.source);
-        const diff_ = DataRepo.calcDataDiff(synceddata.current, current);
+        const dataRecent = synceddata.dataRecent || {};
+        synceddata.dataRecent = DataRepo._cloneSourceData(synceddata.source);
 
-        synceddata.current = current;
-
-        return diff_;
+        return DataRepo.calcDataDiff(dataRecent, synceddata.source.data);
     }
 
     public setData(name: string, data: object) {
-        let synceddata = this._synceddata[name];
-        if (synceddata) {
-            synceddata.current = data;
-        } else {
-            synceddata = this._synceddata[name] = { current: data };
-        }
+        this.applyDataDiff(name, DataRepo.calcDataDiff({}, data));
     }
 
     public applyDataDiff(name: string, diff_: API.DataDiff[]) {
         let synceddata = this._synceddata[name];
         if (!synceddata) {
-            synceddata = this._synceddata[name] = { current: {} };
+            synceddata = this._synceddata[name] = { source: { data: {} } };
         }
 
-        DataRepo.applyDataDiff(synceddata.current, diff_);
+        DataRepo.applyDataDiff(synceddata.source.data, diff_);
     }
 }

@@ -7,8 +7,8 @@ export declare class DataRepo {
     static calcDataDiff(lhs: object, rhs: object): API.DataDiff[];
     protected static _cloneSourceData(source: API.DataSource): object;
     private _synceddata;
-    addDataSource(name: string, source: API.DataSource): boolean;
     isDataSource(name: string): boolean;
+    setDataSource(name: string, source: API.DataSource): boolean;
     removeDataSource(name: string): boolean;
     getData(name: string): object | undefined;
     calcDataDiff(name: string): API.DataDiff[] | undefined;

@@ -9,7 +9,7 @@ export declare class DataRepo {
     private _synceddata;
     isDataSource(name: string): boolean;
     setDataSource(name: string, source: API.DataSource): boolean;
-    removeDataSource(name: string): boolean;
+    deleteDataSource(name: string): boolean;
     getData(name: string): object | undefined;
     calcDataDiff(name: string): API.DataDiff[] | undefined;
     setData(name: string, data: object): void;

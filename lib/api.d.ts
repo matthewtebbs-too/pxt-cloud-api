@@ -38,8 +38,8 @@ export interface DataSource {
     readonly cloner?: DataCloner;
 }
 export interface WorldAPI extends CommonAPI {
-    addDataSource(name: string, source_?: DataSource): boolean;
-    removeDataSource(name: string): boolean;
+    setDataSource(name: string, source_?: DataSource): boolean;
+    deleteDataSource(name: string): boolean;
     currentlySynced(name: string): PromiseLike<object | undefined>;
     syncDataSource(name: string): PromiseLike<void>;
     syncDataDiff(name: string, diff: DataDiff[]): PromiseLike<void>;

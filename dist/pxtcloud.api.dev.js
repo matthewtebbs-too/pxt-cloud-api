@@ -54,7 +54,7 @@ var DataRepo = (function () {
         }
         return !!synceddata;
     };
-    DataRepo.prototype.removeDataSource = function (name) {
+    DataRepo.prototype.deleteDataSource = function (name) {
         return delete this._synceddata[name];
     };
     DataRepo.prototype.getData = function (name) {

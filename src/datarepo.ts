@@ -63,7 +63,7 @@ export class DataRepo {
         return !!synceddata;
     }
 
-    public removeDataSource(name: string): boolean {
+    public deleteDataSource(name: string): boolean {
         return delete this._synceddata[name];
     }
 

@@ -53,7 +53,7 @@ export type DataDiff = Buffer; /* packed (opaque) deep-diff IDiff structure */
 export type DataFilter = (path: string[], key: string) => boolean; /* deep-diff prefilter callback */
 
 /* uses clone-deep, see https://github.com/jonschlinkert/clone-deep */
-export type DataCloner = (obj: object) => object; /* clone-deep instance clone callback */
+export type DataCloner = (obj: object) => object | undefined; /* clone-deep instance clone callback */
 
 export interface DataSource {
     readonly data: object;

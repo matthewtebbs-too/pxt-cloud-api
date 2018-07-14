@@ -33,7 +33,7 @@ export interface ChatAPI extends CommonAPI {
 }
 export declare type DataDiff = Buffer;
 export declare type DataFilter = (path: string[], key: string) => boolean;
-export declare type DataCloner = (obj: object) => object;
+export declare type DataCloner = (obj: object) => object | undefined;
 export interface DataSource {
     readonly data: object;
     readonly filter?: DataFilter;

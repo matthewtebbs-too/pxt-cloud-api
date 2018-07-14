@@ -32,9 +32,11 @@ export interface ChatAPI extends CommonAPI {
     newMessage(msg: string | MessageData): PromiseLike<boolean>;
 }
 export declare type DataDiff = Buffer;
-export declare type DataCloner = (value: object, deepclone: DataCloner) => object;
+export declare type DataFilter = (path: string[], key: string) => boolean;
+export declare type DataCloner = (obj: object) => object;
 export interface DataSource {
     readonly data: object;
+    readonly filter?: DataFilter;
     readonly cloner?: DataCloner;
 }
 export interface WorldAPI extends CommonAPI {

@@ -48,12 +48,16 @@ export interface ChatAPI extends CommonAPI {
     newMessage(msg: string | MessageData): PromiseLike<boolean>;
 }
 
-export type DataDiff = Buffer; /* packed (opaque) deep-diff's IDiff structure */
+/* uses deep-diff, see https://github.com/flitbit/diff */
+export type DataDiff = Buffer; /* packed (opaque) deep-diff IDiff structure */
+export type DataFilter = (path: string[], key: string) => boolean; /* deep-diff prefilter callback */
 
-export type DataCloner = (value: object, deepclone: DataCloner) => object;
+/* uses clone-deep, see https://github.com/jonschlinkert/clone-deep */
+export type DataCloner = (obj: object) => object; /* clone-deep instance clone callback */
 
 export interface DataSource {
     readonly data: object;
+    readonly filter?: DataFilter;
     readonly cloner?: DataCloner;
 }
 

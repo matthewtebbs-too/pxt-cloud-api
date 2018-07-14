@@ -27,19 +27,21 @@ export class DataRepo {
     }
 
     public static applyDataDiff(current: object, diff_: API.DataDiff[]): object {
-        diff_.forEach(d => applyChange(current, current, DataRepo.decode(d)));
+        if (diff_) {
+            diff_.forEach(d => applyChange(current, current, DataRepo.decode(d)));
+        }
 
         return current;
     }
 
-    public static calcDataDiff(lhs: object, rhs: object): API.DataDiff[] {
-        const diff_ = diff(lhs, rhs) || [];
+    public static calcDataDiff(lhs: object, rhs: object, filter?: API.DataFilter): API.DataDiff[] {
+        const diff_ = diff(lhs, rhs, filter);
 
-        return diff_.map(d => DataRepo.encode(d));
+        return diff_ ? diff_.map(d => DataRepo.encode(d)) : [];
     }
 
-    protected static _cloneSourceData(source: API.DataSource): object {
-        return source.cloner ? source.cloner(source.data, cloneDeep) : cloneDeep(source.data);
+    public static cloneData(current: object, cloner?: API.DataCloner): object {
+        return cloneDeep(current, cloner);
     }
 
     private _synceddata: { [key: string]: SyncedData } = {};
@@ -82,10 +84,12 @@ export class DataRepo {
             return undefined;
         }
 
-        const dataRecent = synceddata.dataRecent || {};
-        synceddata.dataRecent = DataRepo._cloneSourceData(synceddata.source);
+        const source = synceddata.source;
 
-        return DataRepo.calcDataDiff(dataRecent, synceddata.source.data);
+        const dataRecent = synceddata.dataRecent || {};
+        synceddata.dataRecent = DataRepo.cloneData(source.data, source.cloner);
+
+        return DataRepo.calcDataDiff(dataRecent, source.data, source.filter);
     }
 
     public setData(name: string, data: object) {

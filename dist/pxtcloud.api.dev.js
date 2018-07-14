@@ -30,15 +30,17 @@ var DataRepo = (function () {
         return MsgPack.decode(buffer);
     };
     DataRepo.applyDataDiff = function (current, diff_) {
-        diff_.forEach(function (d) { return deep_diff_1.applyChange(current, current, DataRepo.decode(d)); });
+        if (diff_) {
+            diff_.forEach(function (d) { return deep_diff_1.applyChange(current, current, DataRepo.decode(d)); });
+        }
         return current;
     };
-    DataRepo.calcDataDiff = function (lhs, rhs) {
-        var diff_ = deep_diff_1.diff(lhs, rhs) || [];
-        return diff_.map(function (d) { return DataRepo.encode(d); });
+    DataRepo.calcDataDiff = function (lhs, rhs, filter) {
+        var diff_ = deep_diff_1.diff(lhs, rhs, filter);
+        return diff_ ? diff_.map(function (d) { return DataRepo.encode(d); }) : [];
     };
-    DataRepo._cloneSourceData = function (source) {
-        return source.cloner ? source.cloner(source.data, cloneDeep) : cloneDeep(source.data);
+    DataRepo.cloneData = function (current, cloner) {
+        return cloneDeep(current, cloner);
     };
     DataRepo.prototype.isDataSource = function (name) {
         return !!this._synceddata[name];
@@ -69,9 +71,10 @@ var DataRepo = (function () {
         if (!synceddata) {
             return undefined;
         }
+        var source = synceddata.source;
         var dataRecent = synceddata.dataRecent || {};
-        synceddata.dataRecent = DataRepo._cloneSourceData(synceddata.source);
-        return DataRepo.calcDataDiff(dataRecent, synceddata.source.data);
+        synceddata.dataRecent = DataRepo.cloneData(source.data, source.cloner);
+        return DataRepo.calcDataDiff(dataRecent, source.data, source.filter);
     };
     DataRepo.prototype.setData = function (name, data) {
         this.applyDataDiff(name, DataRepo.calcDataDiff({}, data));

@@ -32,12 +32,15 @@ export interface ChatAPI extends CommonAPI {
     newMessage(msg: string | MessageData): PromiseLike<boolean>;
 }
 export declare type DataDiff = Buffer;
-export declare type DataFilter = (path: string[], key: string) => boolean;
+export declare type DataFilter = (path: string[], key: string | number | undefined) => boolean;
 export declare type DataCloner = (obj: object) => object | undefined;
+export interface DataSourceOptions {
+    cloner?: DataCloner;
+    filter?: DataFilter;
+}
 export interface DataSource {
     readonly data: object;
-    readonly filter?: DataFilter;
-    readonly cloner?: DataCloner;
+    readonly options?: DataSourceOptions;
 }
 export interface WorldAPI extends CommonAPI {
     setDataSource(name: string, source_?: DataSource): boolean;

@@ -50,15 +50,19 @@ export interface ChatAPI extends CommonAPI {
 
 /* uses deep-diff, see https://github.com/flitbit/diff */
 export type DataDiff = Buffer; /* packed (opaque) deep-diff IDiff structure */
-export type DataFilter = (path: string[], key: string) => boolean; /* deep-diff prefilter callback */
+export type DataFilter = (path: string[], key: string | number | undefined) => boolean; /* deep-diff prefilter callback */
 
 /* uses clone-deep, see https://github.com/jonschlinkert/clone-deep */
 export type DataCloner = (obj: object) => object | undefined; /* clone-deep instance clone callback */
 
+export interface DataSourceOptions {
+    cloner?: DataCloner;
+    filter?: DataFilter;
+}
+
 export interface DataSource {
     readonly data: object;
-    readonly filter?: DataFilter;
-    readonly cloner?: DataCloner;
+    readonly options?: DataSourceOptions;
 }
 
 export interface WorldAPI extends CommonAPI {

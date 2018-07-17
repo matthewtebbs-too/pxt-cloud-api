@@ -5,12 +5,13 @@
     Copyright (c) 2018 MuddyTummy Software LLC
 */
 
-const cloneDeep = require('clone-deep');
 import { applyChange, diff } from 'deep-diff';
-
+import * as Lo from 'lodash';
 import * as MsgPack from 'msgpack-lite';
 
 import * as API from './api';
+
+// tslint:disable
 
 interface SyncedData {
     source: API.DataSource;
@@ -34,14 +35,38 @@ export class DataRepo {
         return current;
     }
 
-    public static calcDataDiff(lhs: object, rhs: object, filter?: API.DataFilter): API.DataDiff[] {
-        const diff_ = diff(lhs, rhs, filter);
+    public static calcDataDiff(lhs: object, rhs: object, options?: API.DataSourceOptions): API.DataDiff[] {
+        const diff_ = diff(lhs, rhs, options ? options.filter : undefined);
 
         return diff_ ? diff_.map(d => DataRepo.encode(d)) : [];
     }
 
-    public static cloneData(current: object, cloner?: API.DataCloner): object {
-        return cloneDeep(current, cloner);
+    public static cloneData(current: object, options?: API.DataSourceOptions): object {
+        const objStack: object[] = [];
+        const path: string[] = [];
+
+        return Lo.cloneDeepWith(current, (value: any, key: number | string | undefined, object: any | undefined) => {
+            if (undefined !== key) {
+                for (;;) {
+                    let top = Lo.last(objStack);
+                    if (!top || top.hasOwnProperty(key)) {
+                        break;
+                    }
+                    path.pop(); objStack.pop();
+                }
+
+                if (options && options.filter) {
+                    options.filter(path, key);
+                }
+
+                if (Lo.isObject(value)) {
+                    path.push(key.toString());
+                    objStack.push(value);
+                } 
+            }
+
+            return options && options.cloner ? options.cloner(value) : undefined;
+        });
     }
 
     private _synceddata: { [key: string]: SyncedData } = {};
@@ -87,9 +112,9 @@ export class DataRepo {
         const source = synceddata.source;
 
         const dataRecent = synceddata.dataRecent || {};
-        synceddata.dataRecent = DataRepo.cloneData(source.data, source.cloner);
+        synceddata.dataRecent = DataRepo.cloneData(source.data, source.options);
 
-        return DataRepo.calcDataDiff(dataRecent, source.data, source.filter);
+        return DataRepo.calcDataDiff(dataRecent, source.data, source.options);
     }
 
     public setData(name: string, data: object) {

@@ -41,35 +41,11 @@ export class DataRepo {
         return diff_ ? diff_.map(d => DataRepo.encode(d)) : [];
     }
 
-    public static cloneData(current: object, options?: API.DataSourceOptions): object {
-        const objStack: object[] = [];
-        const path: string[] = [];
-
-        return Lo.cloneDeepWith(current, (value: any, key: number | string | undefined, object: any | undefined) => {
-            const isObject = Lo.isObject(value);
-
-            if (undefined !== key) {
-                for (;;) {
-                    let top = Lo.last(objStack);
-                    if (!top || top.hasOwnProperty(key)) {
-                        break;
-                    }
-                    path.pop(); objStack.pop();
-                }
-
-                if (options && options.filter) {
-                    options.filter(path, key);
-                }
-
-                if (isObject) {
-                    path.push(key.toString());
-                    objStack.push(value);
-                } 
-            }
-
+    public static cloneData(current: object, options? : API.DataSourceOptions): object {
+        return Lo.cloneDeepWith(current, (value: any, key: number | string | undefined) => {
             let valueClone;
 
-            if (isObject) {
+            if (undefined !== key) {
                 if (options && options.cloner) {
                     valueClone = options.cloner(value) 
                 }

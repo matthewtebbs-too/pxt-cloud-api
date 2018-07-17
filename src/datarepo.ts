@@ -46,6 +46,8 @@ export class DataRepo {
         const path: string[] = [];
 
         return Lo.cloneDeepWith(current, (value: any, key: number | string | undefined, object: any | undefined) => {
+            const isObject = Lo.isObject(value);
+
             if (undefined !== key) {
                 for (;;) {
                     let top = Lo.last(objStack);
@@ -59,13 +61,21 @@ export class DataRepo {
                     options.filter(path, key);
                 }
 
-                if (Lo.isObject(value)) {
+                if (isObject) {
                     path.push(key.toString());
                     objStack.push(value);
                 } 
             }
 
-            return options && options.cloner ? options.cloner(value) : undefined;
+            let valueClone;
+
+            if (isObject) {
+                if (options && options.cloner) {
+                    valueClone = options.cloner(value) 
+                }
+            }
+
+            return valueClone;
         });
     }
 

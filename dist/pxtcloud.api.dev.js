@@ -43,6 +43,7 @@ var DataRepo = (function () {
         var objStack = [];
         var path = [];
         return Lo.cloneDeepWith(current, function (value, key, object) {
+            var isObject = Lo.isObject(value);
             if (undefined !== key) {
                 for (;;) {
                     var top_1 = Lo.last(objStack);
@@ -55,12 +56,18 @@ var DataRepo = (function () {
                 if (options && options.filter) {
                     options.filter(path, key);
                 }
-                if (Lo.isObject(value)) {
+                if (isObject) {
                     path.push(key.toString());
                     objStack.push(value);
                 }
             }
-            return options && options.cloner ? options.cloner(value) : undefined;
+            var valueClone;
+            if (isObject) {
+                if (options && options.cloner) {
+                    valueClone = options.cloner(value);
+                }
+            }
+            return valueClone;
         });
     };
     DataRepo.prototype.isDataSource = function (name) {

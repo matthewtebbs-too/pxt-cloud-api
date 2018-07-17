@@ -32,10 +32,8 @@ export interface ChatAPI extends CommonAPI {
     newMessage(msg: string | MessageData): PromiseLike<boolean>;
 }
 export declare type DataDiff = Buffer;
-export declare type DataFilter = (path: string[], key: string | number | undefined) => boolean;
-export declare type DataCloner = (obj: object) => object | undefined;
+export declare type DataFilter = (key: number | string | undefined, value?: any) => boolean;
 export interface DataSourceOptions {
-    cloner?: DataCloner;
     filter?: DataFilter;
 }
 export interface DataSource {

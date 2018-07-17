@@ -36,22 +36,16 @@ export class DataRepo {
     }
 
     public static calcDataDiff(lhs: object, rhs: object, options?: API.DataSourceOptions): API.DataDiff[] {
-        const diff_ = diff(lhs, rhs, options ? options.filter : undefined);
+        const diff_ = diff(lhs, rhs, (path: string[], key: number | string | undefined) =>
+            0 === path.length && undefined !== key && options && options.filter ? options.filter(key) : false
+        );
 
         return diff_ ? diff_.map(d => DataRepo.encode(d)) : [];
     }
 
-    public static cloneData(current: object, options? : API.DataSourceOptions): object {
-        return Lo.cloneDeepWith(current, (value: any, key: number | string | undefined) => {
-            let valueClone;
-
-            if (undefined !== key) {
-                if (options && options.cloner) {
-                    valueClone = options.cloner(value) 
-                }
-            }
-
-            return valueClone;
+    public static filteredData(current: object, options? : API.DataSourceOptions): object {
+        return Lo.omitBy(current, (value: any, key: number | string | undefined) => {
+            return undefined !== key && options && options.filter ? options.filter(key, value) : false;
         });
     }
 
@@ -98,7 +92,7 @@ export class DataRepo {
         const source = synceddata.source;
 
         const dataRecent = synceddata.dataRecent || {};
-        synceddata.dataRecent = DataRepo.cloneData(source.data, source.options);
+        synceddata.dataRecent = DataRepo.filteredData(source.data, source.options);
 
         return DataRepo.calcDataDiff(dataRecent, source.data, source.options);
     }

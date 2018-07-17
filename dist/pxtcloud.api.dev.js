@@ -36,18 +36,14 @@ var DataRepo = (function () {
         return current;
     };
     DataRepo.calcDataDiff = function (lhs, rhs, options) {
-        var diff_ = deep_diff_1.diff(lhs, rhs, options ? options.filter : undefined);
+        var diff_ = deep_diff_1.diff(lhs, rhs, function (path, key) {
+            return 0 === path.length && undefined !== key && options && options.filter ? options.filter(key) : false;
+        });
         return diff_ ? diff_.map(function (d) { return DataRepo.encode(d); }) : [];
     };
-    DataRepo.cloneData = function (current, options) {
-        return Lo.cloneDeepWith(current, function (value, key) {
-            var valueClone;
-            if (undefined !== key) {
-                if (options && options.cloner) {
-                    valueClone = options.cloner(value);
-                }
-            }
-            return valueClone;
+    DataRepo.filteredData = function (current, options) {
+        return Lo.omitBy(current, function (value, key) {
+            return undefined !== key && options && options.filter ? options.filter(key, value) : false;
         });
     };
     DataRepo.prototype.isDataSource = function (name) {
@@ -81,7 +77,7 @@ var DataRepo = (function () {
         }
         var source = synceddata.source;
         var dataRecent = synceddata.dataRecent || {};
-        synceddata.dataRecent = DataRepo.cloneData(source.data, source.options);
+        synceddata.dataRecent = DataRepo.filteredData(source.data, source.options);
         return DataRepo.calcDataDiff(dataRecent, source.data, source.options);
     };
     DataRepo.prototype.setData = function (name, data) {

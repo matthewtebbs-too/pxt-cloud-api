@@ -7,6 +7,7 @@ export declare class DataRepo {
     static calcDataDiff(lhs: object, rhs: object, options?: API.DataSourceOptions): API.DataDiff[];
     static filteredData(current: object, options?: API.DataSourceOptions): object;
     private _synceddata;
+    names(): string[];
     isDataSource(name: string): boolean;
     setDataSource(name: string, source: API.DataSource): boolean;
     deleteDataSource(name: string): boolean;

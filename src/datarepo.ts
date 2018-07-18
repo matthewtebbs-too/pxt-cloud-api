@@ -51,6 +51,10 @@ export class DataRepo {
 
     private _synceddata: { [key: string]: SyncedData } = {};
 
+    public names(): string[] {
+        return Object.keys(this._synceddata);
+    }
+
     public isDataSource(name: string): boolean {
         return !!this._synceddata[name];
     }

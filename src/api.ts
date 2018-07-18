@@ -65,7 +65,7 @@ export interface WorldAPI extends CommonAPI {
     setDataSource(name: string, source_?: DataSource): boolean;
     deleteDataSource(name: string): boolean;
 
-    pullAllData(): PromiseLike<[object | undefined]>;
+    pullAllData(): PromiseLike<[object]>;
     pullData(name: string): PromiseLike<object | undefined>;
 
     pushAllData(): PromiseLike<void>;

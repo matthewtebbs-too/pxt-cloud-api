@@ -71,6 +71,8 @@ export interface NamedData {
 }
 
 export interface WorldAPI extends CommonAPI {
+    syncDataSources(): PromiseLike<boolean>;
+
     setDataSource(name: string, source_?: DataSource): boolean;
     deleteDataSource(name: string): boolean;
 

@@ -40,10 +40,14 @@ export interface DataSource {
     readonly data: object;
     readonly options?: DataSourceOptions;
 }
+export interface NamedData {
+    readonly name: string;
+    readonly data: object;
+}
 export interface WorldAPI extends CommonAPI {
     setDataSource(name: string, source_?: DataSource): boolean;
     deleteDataSource(name: string): boolean;
-    pullAllData(): PromiseLike<object[]>;
+    pullAllData(): PromiseLike<NamedData[]>;
     pullData(name: string): PromiseLike<object | undefined>;
     pushAllData(): PromiseLike<void>;
     pushData(name: string): PromiseLike<void>;

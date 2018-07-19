@@ -9,8 +9,11 @@ var Events;
     Events["UserJoined"] = "user joined";
     Events["UserRemoveSelf"] = "remove self";
     Events["UserSelfInfo"] = "self info";
-    Events["WorldSyncData"] = "sync data";
-    Events["WorldSyncDataDiff"] = "sync data diff";
+    Events["WorldPullAllData"] = "pull all data";
+    Events["WorldPullData"] = "pull data";
+    Events["WorldPushAllData"] = "push all data";
+    Events["WorldPushData"] = "push data";
+    Events["WorldPushDataDiff"] = "push data diff";
 })(Events = exports.Events || (exports.Events = {}));
 
 },{}],2:[function(require,module,exports){

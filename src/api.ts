@@ -52,7 +52,8 @@ export interface ChatAPI extends CommonAPI {
     newMessage(msg: string | MessageData): PromiseLike<boolean>;
 }
 
-export type DataDiff = Buffer; /* packed (opaque) deep-diff IDiff structure, see https://github.com/flitbit/diff */
+export type Data = Buffer; /* packed (opaque) object */
+export type DataDiff = Buffer; /* packed (opaque) deep-diff IDiff object, see https://github.com/flitbit/diff */
 
 export type DataFilter = (key: number | string | undefined, value?: any) => boolean; /* top-level keys prefilter callback */
 
@@ -67,7 +68,7 @@ export interface DataSource {
 
 export interface NamedData {
     readonly name: string;
-    readonly data: object;
+    readonly data: Data;
 }
 
 export interface WorldAPI extends CommonAPI {
@@ -77,7 +78,7 @@ export interface WorldAPI extends CommonAPI {
     deleteDataSource(name: string): boolean;
 
     pullAllData(): PromiseLike<NamedData[]>;
-    pullData(name: string): PromiseLike<object | undefined>;
+    pullData(name: string): PromiseLike<Data | undefined>;
 
     pushAllData(): PromiseLike<void>;
     pushData(name: string): PromiseLike<void>;

@@ -34,6 +34,7 @@ export interface MessageData {
 export interface ChatAPI extends CommonAPI {
     newMessage(msg: string | MessageData): PromiseLike<boolean>;
 }
+export declare type Data = Buffer;
 export declare type DataDiff = Buffer;
 export declare type DataFilter = (key: number | string | undefined, value?: any) => boolean;
 export interface DataSourceOptions {
@@ -45,14 +46,14 @@ export interface DataSource {
 }
 export interface NamedData {
     readonly name: string;
-    readonly data: object;
+    readonly data: Data;
 }
 export interface WorldAPI extends CommonAPI {
     syncDataSources(): PromiseLike<boolean>;
     setDataSource(name: string, source_?: DataSource): boolean;
     deleteDataSource(name: string): boolean;
     pullAllData(): PromiseLike<NamedData[]>;
-    pullData(name: string): PromiseLike<object | undefined>;
+    pullData(name: string): PromiseLike<Data | undefined>;
     pushAllData(): PromiseLike<void>;
     pushData(name: string): PromiseLike<void>;
     pushDataDiff(name: string, diff: DataDiff[]): PromiseLike<void>;

@@ -66,9 +66,9 @@ export interface DataSource {
     readonly options?: DataSourceOptions;
 }
 
-export interface NamedData {
+export interface Tagged<T> {
     readonly name: string;
-    readonly data: Data;
+    readonly data: T;
 }
 
 export interface WorldAPI extends CommonAPI {
@@ -77,7 +77,7 @@ export interface WorldAPI extends CommonAPI {
     setDataSource(name: string, source_?: DataSource): boolean;
     deleteDataSource(name: string): boolean;
 
-    pullAllData(): PromiseLike<NamedData[]>;
+    pullAllData(): PromiseLike<Array<Tagged<Data>>>;
     pullData(name: string): PromiseLike<Data | undefined>;
 
     pushAllData(): PromiseLike<void>;

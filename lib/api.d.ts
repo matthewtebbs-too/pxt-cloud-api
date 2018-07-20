@@ -43,15 +43,15 @@ export interface DataSource {
     readonly data: object;
     readonly options?: DataSourceOptions;
 }
-export interface NamedData {
+export interface Tagged<T> {
     readonly name: string;
-    readonly data: Data;
+    readonly data: T;
 }
 export interface WorldAPI extends CommonAPI {
     syncDataSources(): PromiseLike<boolean>;
     setDataSource(name: string, source_?: DataSource): boolean;
     deleteDataSource(name: string): boolean;
-    pullAllData(): PromiseLike<NamedData[]>;
+    pullAllData(): PromiseLike<Array<Tagged<Data>>>;
     pullData(name: string): PromiseLike<Data | undefined>;
     pushAllData(): PromiseLike<void>;
     pushData(name: string): PromiseLike<void>;

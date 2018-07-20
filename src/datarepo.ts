@@ -29,7 +29,7 @@ export class DataRepo {
 
     public static applyDataDiff(current: object, diff_: API.DataDiff[]): object {
         if (diff_) {
-            diff_.forEach(d => applyChange(current, current, DataRepo.decode(d)));
+            diff_.forEach(d => applyChange(current, current, d));
         }
 
         return current;
@@ -40,7 +40,7 @@ export class DataRepo {
             0 === path.length && undefined !== key && options && options.filter ? options.filter(key) : false
         );
 
-        return diff_ ? diff_.map(d => DataRepo.encode(d)) : [];
+        return diff_ || [];
     }
 
     public static filteredData(current: object, options? : API.DataSourceOptions): object {

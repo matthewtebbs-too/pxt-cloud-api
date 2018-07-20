@@ -1,4 +1,3 @@
-/// <reference types="node" />
 export declare enum Events {
     ChatNewMessage = "new message",
     UserAddSelf = "add self",
@@ -34,8 +33,8 @@ export interface MessageData {
 export interface ChatAPI extends CommonAPI {
     newMessage(msg: string | MessageData): PromiseLike<boolean>;
 }
-export declare type Data = Buffer;
-export declare type DataDiff = Buffer;
+export declare type Data = object;
+export declare type DataDiff = any;
 export declare type DataFilter = (key: number | string | undefined, value?: any) => boolean;
 export interface DataSourceOptions {
     filter?: DataFilter;

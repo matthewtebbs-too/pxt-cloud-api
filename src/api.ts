@@ -52,8 +52,8 @@ export interface ChatAPI extends CommonAPI {
     newMessage(msg: string | MessageData): PromiseLike<boolean>;
 }
 
-export type Data = Buffer; /* packed (opaque) object */
-export type DataDiff = Buffer; /* packed (opaque) deep-diff IDiff object, see https://github.com/flitbit/diff */
+export type Data = object; /* data object */
+export type DataDiff = any; /* deep-diff IDiff object, see https://github.com/flitbit/diff */
 
 export type DataFilter = (key: number | string | undefined, value?: any) => boolean; /* top-level keys prefilter callback */
 

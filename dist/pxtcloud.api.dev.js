@@ -34,7 +34,7 @@ var DataRepo = (function () {
     };
     DataRepo.applyDataDiff = function (current, diff_) {
         if (diff_) {
-            diff_.forEach(function (d) { return deep_diff_1.applyChange(current, current, DataRepo.decode(d)); });
+            diff_.forEach(function (d) { return deep_diff_1.applyChange(current, current, d); });
         }
         return current;
     };
@@ -42,7 +42,7 @@ var DataRepo = (function () {
         var diff_ = deep_diff_1.diff(lhs, rhs, function (path, key) {
             return 0 === path.length && undefined !== key && options && options.filter ? options.filter(key) : false;
         });
-        return diff_ ? diff_.map(function (d) { return DataRepo.encode(d); }) : [];
+        return diff_ || [];
     };
     DataRepo.filteredData = function (current, options) {
         return Lo.omitBy(current, function (value, key) {

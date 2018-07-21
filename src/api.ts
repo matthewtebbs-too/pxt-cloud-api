@@ -74,7 +74,7 @@ export interface Tagged<T> {
 export interface WorldAPI extends CommonAPI {
     syncDataSources(): PromiseLike<boolean>;
 
-    setDataSource(name: string, source_?: DataSource): boolean;
+    setDataSource(name: string, source?: DataSource): boolean;
     deleteDataSource(name: string): boolean;
 
     pullAllData(): PromiseLike<Array<Tagged<Data>>>;

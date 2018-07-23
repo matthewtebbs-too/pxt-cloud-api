@@ -22,11 +22,11 @@ export class DataRepo {
     }
 
     public static encodeArray(data: any): Buffer[] {
-        return data.map((d: any) => MsgPack.encode(d));
+        return data.map((d: any) => DataRepo.encode(d));
     }
 
     public static decode(buffer: Buffer | Buffer[]): any {
-        return Array.isArray(buffer) ? buffer.map(b => MsgPack.decode(b)) : MsgPack.decode(buffer);
+        return Array.isArray(buffer) ? buffer.map(b => DataRepo.decode(b)) : MsgPack.decode(new Uint8Array(buffer));
     }
 
     public static applyDataDiff(current: object, diff_: API.DataDiff[]): object {

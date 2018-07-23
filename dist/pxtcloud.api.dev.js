@@ -30,10 +30,10 @@ var DataRepo = (function () {
         return MsgPack.encode(data);
     };
     DataRepo.encodeArray = function (data) {
-        return data.map(function (d) { return MsgPack.encode(d); });
+        return data.map(function (d) { return DataRepo.encode(d); });
     };
     DataRepo.decode = function (buffer) {
-        return Array.isArray(buffer) ? buffer.map(function (b) { return MsgPack.decode(b); }) : MsgPack.decode(buffer);
+        return Array.isArray(buffer) ? buffer.map(function (b) { return DataRepo.decode(b); }) : MsgPack.decode(new Uint8Array(buffer));
     };
     DataRepo.applyDataDiff = function (current, diff_) {
         if (diff_) {

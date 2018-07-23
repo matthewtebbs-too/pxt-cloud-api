@@ -48,7 +48,7 @@ var DataRepo = (function () {
         return diff_ || [];
     };
     DataRepo.filteredData = function (current, options) {
-        return Lo.omitBy(current, function (value, key) {
+        return Lo.cloneDeepWith(current, function (value, key) {
             return undefined !== key && options && options.filter ? options.filter(key, value) : false;
         });
     };

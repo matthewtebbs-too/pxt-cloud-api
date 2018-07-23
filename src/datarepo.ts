@@ -11,8 +11,6 @@ import * as MsgPack from 'msgpack-lite';
 
 import * as API from './api';
 
-// tslint:disable
-
 interface SyncedData {
     source: API.DataSource;
     dataRecent?: object;
@@ -41,16 +39,16 @@ export class DataRepo {
 
     public static calcDataDiff(lhs: object, rhs: object, options?: API.DataSourceOptions): API.DataDiff[] {
         const diff_ = diff(lhs, rhs, (path: string[], key: number | string | undefined) =>
-            0 === path.length && undefined !== key && options && options.filter ? options.filter(key) : false
+            0 === path.length && undefined !== key && options && options.filter ? options.filter(key) : false,
         );
 
         return diff_ || [];
     }
 
-    public static filteredData(current: object, options? : API.DataSourceOptions): object {
-        return Lo.omitBy(current, (value: any, key: number | string | undefined) => {
-            return undefined !== key && options && options.filter ? options.filter(key, value) : false;
-        });
+    public static filteredData(current: object, options?: API.DataSourceOptions): object {
+        return Lo.cloneDeepWith(current, (value: any, key: number | string | undefined) =>
+            undefined !== key && options && options.filter ? options.filter(key, value) : false,
+        );
     }
 
     private _synceddata: { [key: string]: SyncedData } = {};

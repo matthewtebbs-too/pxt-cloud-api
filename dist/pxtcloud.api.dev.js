@@ -26,11 +26,11 @@ var DataRepo = (function () {
     function DataRepo() {
         this._synceddata = {};
     }
-    DataRepo.encode = function (data) {
-        return MsgPack.encode(data);
+    DataRepo.encode = function (data, asArray) {
+        return asArray ? data.map(function (d) { return MsgPack.encode(d); }) : MsgPack.encode(data);
     };
     DataRepo.decode = function (buffer) {
-        return MsgPack.decode(buffer);
+        return Array.isArray(buffer) ? buffer.map(function (b) { return MsgPack.decode(b); }) : MsgPack.decode(buffer);
     };
     DataRepo.applyDataDiff = function (current, diff_) {
         if (diff_) {

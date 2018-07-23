@@ -19,12 +19,12 @@ interface SyncedData {
 }
 
 export class DataRepo {
-    public static encode(data: any): Buffer {
-        return MsgPack.encode(data);
+    public static encode(data: any, asArray: boolean): Buffer | Buffer[] {
+        return asArray ? data.map((d: any) => MsgPack.encode(d)) : MsgPack.encode(data);
     }
 
-    public static decode(buffer: Buffer): any {
-        return MsgPack.decode(buffer);
+    public static decode(buffer: Buffer | Buffer[]): any {
+        return Array.isArray(buffer) ? buffer.map(b => MsgPack.decode(b)) : MsgPack.decode(buffer);
     }
 
     public static applyDataDiff(current: object, diff_: API.DataDiff[]): object {

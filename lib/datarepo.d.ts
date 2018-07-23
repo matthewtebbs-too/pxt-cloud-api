@@ -1,7 +1,8 @@
 /// <reference types="node" />
 import * as API from './api';
 export declare class DataRepo {
-    static encode(data: any, asArray?: boolean): Buffer | Buffer[];
+    static encode(data: any): Buffer;
+    static encodeArray(data: any): Buffer[];
     static decode(buffer: Buffer | Buffer[]): any;
     static applyDataDiff(current: object, diff_: API.DataDiff[]): object;
     static calcDataDiff(lhs: object, rhs: object, options?: API.DataSourceOptions): API.DataDiff[];

@@ -19,8 +19,12 @@ interface SyncedData {
 }
 
 export class DataRepo {
-    public static encode(data: any, asArray?: boolean): Buffer | Buffer[] {
-        return !!asArray ? data.map((d: any) => MsgPack.encode(d)) : MsgPack.encode(data);
+    public static encode(data: any): Buffer {
+        return MsgPack.encode(data);
+    }
+
+    public static encodeArray(data: any): Buffer[] {
+        return data.map((d: any) => MsgPack.encode(d));
     }
 
     public static decode(buffer: Buffer | Buffer[]): any {

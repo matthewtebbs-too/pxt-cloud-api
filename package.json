@@ -23,9 +23,9 @@
   "homepage": "https://github.com/muddytummy/pxt-cloud-api#readme",
   "dependencies": {
     "@types/deep-diff": "0.0.31",
-    "@types/lodash": "^4.14.115",
+    "@types/lodash": "^4.14.116",
     "@types/msgpack-lite": "^0.1.6",
-    "@types/node": "^8.10.23",
+    "@types/node": "^8.10.24",
     "debug": "^3.1.0",
     "deep-diff": "^1.0.1",
     "dotenv": "^5.0.1",

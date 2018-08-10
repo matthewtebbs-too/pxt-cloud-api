@@ -6,7 +6,6 @@ export declare class DataRepo {
     static decode(buffer: Buffer | Buffer[]): any;
     static applyDataDiff(current: object, diff_: API.DataDiff[]): object;
     static calcDataDiff(lhs: object, rhs: object, options?: API.DataSourceOptions): API.DataDiff[];
-    static filteredData(current: object, options?: API.DataSourceOptions): object;
     private _synceddata;
     readonly names: string[];
     isDataSource(name: string): boolean;

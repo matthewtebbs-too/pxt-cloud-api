@@ -45,12 +45,6 @@ export class DataRepo {
         return diff_ || [];
     }
 
-    public static filteredData(current: object, options?: API.DataSourceOptions): object {
-        return Lo.cloneDeepWith(current, (value: any, key: number | string | undefined) =>
-            undefined !== key && options && options.filter ? options.filter(key, value) : false,
-        );
-    }
-
     private _synceddata: { [key: string]: SyncedData } = {};
 
     public get names(): string[] {
@@ -98,7 +92,7 @@ export class DataRepo {
         const source = synceddata.source;
 
         const dataRecent = synceddata.dataRecent || {};
-        synceddata.dataRecent = DataRepo.filteredData(source.data, source.options);
+        synceddata.dataRecent = Lo.cloneDeep(source.data);
 
         return DataRepo.calcDataDiff(dataRecent, source.data, source.options);
     }

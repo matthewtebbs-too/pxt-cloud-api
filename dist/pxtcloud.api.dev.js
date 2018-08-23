@@ -74,14 +74,21 @@ var DataRepo = (function () {
     DataRepo.prototype.getData = function (name) {
         var synceddata = this._synceddata[name];
         if (!synceddata) {
-            return undefined;
+            return;
         }
         return synceddata.source.data;
+    };
+    DataRepo.prototype.getRecentData = function (name) {
+        var synceddata = this._synceddata[name];
+        if (!synceddata) {
+            return;
+        }
+        return synceddata.dataRecent;
     };
     DataRepo.prototype.calcDataDiff = function (name) {
         var synceddata = this._synceddata[name];
         if (!synceddata) {
-            return undefined;
+            return;
         }
         var source = synceddata.source;
         var dataRecent = synceddata.dataRecent || {};

@@ -77,16 +77,25 @@ export class DataRepo {
     public getData(name: string): object | undefined {
         const synceddata = this._synceddata[name];
         if (!synceddata) {
-            return undefined;
+            return;
         }
 
         return synceddata.source.data;
     }
 
+    public getRecentData(name: string): object | undefined {
+        const synceddata = this._synceddata[name];
+        if (!synceddata) {
+            return;
+        }
+
+        return synceddata.dataRecent;
+    }
+
     public calcDataDiff(name: string): API.DataDiff[] | undefined {
         const synceddata = this._synceddata[name];
         if (!synceddata) {
-            return undefined;
+            return;
         }
 
         const source = synceddata.source;

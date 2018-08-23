@@ -12,6 +12,7 @@ export declare class DataRepo {
     setDataSource(name: string, source: API.DataSource): boolean;
     deleteDataSource(name: string): boolean;
     getData(name: string): object | undefined;
+    getRecentData(name: string): object | undefined;
     calcDataDiff(name: string): API.DataDiff[] | undefined;
     setData(name: string, data: object): void;
     applyDataDiff(name: string, diff_: API.DataDiff[]): void;

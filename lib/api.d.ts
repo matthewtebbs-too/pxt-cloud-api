@@ -58,6 +58,8 @@ export interface WorldAPI extends CommonAPI {
     pushAllData(): PromiseLike<void>;
     pushData(name: string): PromiseLike<void>;
     pushDataDiff(name: string, diff: DataDiff[]): PromiseLike<void>;
+    lockData(name: string): PromiseLike<boolean>;
+    unlockData(name: string): PromiseLike<boolean>;
 }
 export interface PublicAPI {
     readonly chat: ChatAPI;

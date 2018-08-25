@@ -20,6 +20,9 @@ export enum Events {
     WorldPushAllData = 'push all data',
     WorldPushData = 'push data',
     WorldPushDataDiff = 'push data diff',
+
+    WorldLockData = 'lock data',
+    WorldUnlockData = 'unlock data',
 }
 
 export interface CommonAPI {

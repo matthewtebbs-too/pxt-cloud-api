@@ -14,6 +14,8 @@ var Events;
     Events["WorldPushAllData"] = "push all data";
     Events["WorldPushData"] = "push data";
     Events["WorldPushDataDiff"] = "push data diff";
+    Events["WorldLockData"] = "lock data";
+    Events["WorldUnlockData"] = "unlock data";
 })(Events = exports.Events || (exports.Events = {}));
 
 },{}],2:[function(require,module,exports){

@@ -9,7 +9,9 @@ export declare enum Events {
     WorldPullData = "pull data",
     WorldPushAllData = "push all data",
     WorldPushData = "push data",
-    WorldPushDataDiff = "push data diff"
+    WorldPushDataDiff = "push data diff",
+    WorldLockData = "lock data",
+    WorldUnlockData = "unlock data"
 }
 export interface CommonAPI {
     isConnected: boolean;

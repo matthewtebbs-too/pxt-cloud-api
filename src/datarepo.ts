@@ -107,15 +107,21 @@ export class DataRepo {
     }
 
     public setData(name: string, data: object) {
-        this.applyDataDiff(name, DataRepo.calcDataDiff({}, data));
+        this.applyDataDiff(name, DataRepo.calcDataDiff({}, data), true /* reset recent */);
     }
 
-    public applyDataDiff(name: string, diff_: API.DataDiff[]) {
+    public applyDataDiff(name: string, diff_: API.DataDiff[], resetRecent: boolean = false) {
         let synceddata = this._synceddata[name];
         if (!synceddata) {
             synceddata = this._synceddata[name] = { source: { data: {} } };
         }
 
-        DataRepo.applyDataDiff(synceddata.source.data, diff_);
+        const source = synceddata.source;
+
+        DataRepo.applyDataDiff(source.data, diff_);
+
+        if (resetRecent) {
+            synceddata.dataRecent = Lo.cloneDeep(source.data);
+        }
     }
 }

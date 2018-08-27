@@ -57,7 +57,7 @@ export interface WorldAPI extends CommonAPI {
     pullData(name: string): PromiseLike<Data | undefined>;
     pushAllData(): PromiseLike<void>;
     pushData(name: string): PromiseLike<void>;
-    pushDataDiff(name: string, diff: DataDiff[]): PromiseLike<void>;
+    pushDataDiff(name: string, diff: DataDiff[] | undefined): PromiseLike<void>;
     lockData(name: string): PromiseLike<boolean>;
     unlockData(name: string): PromiseLike<boolean>;
 }

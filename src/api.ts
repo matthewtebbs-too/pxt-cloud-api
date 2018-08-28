@@ -21,7 +21,6 @@ export enum Events {
     WorldPushData = 'push data',
     WorldPushDataDiff = 'push data diff',
 
-    WorldLockAllData = 'lock all data',
     WorldLockData = 'lock data',
     WorldUnlockData = 'unlock data',
 }
@@ -88,7 +87,6 @@ export interface WorldAPI extends CommonAPI {
     pushData(name: string, unlock?: boolean): PromiseLike<void>;
     pushDataDiff(name: string, diff: DataDiff[] | undefined, unlock?: boolean): PromiseLike<void>;
 
-    lockAllData(): PromiseLike<boolean>;
     lockData(name: string): PromiseLike<boolean>;
     unlockData(name: string): PromiseLike<boolean>;
 }

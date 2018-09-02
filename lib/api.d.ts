@@ -5,13 +5,12 @@ export declare enum Events {
     UserJoined = "user joined",
     UserRemoveSelf = "remove self",
     UserSelfInfo = "self info",
-    WorldPullAllData = "pull all data",
     WorldPullData = "pull data",
-    WorldPushAllData = "push all data",
     WorldPushData = "push data",
     WorldPushDataDiff = "push data diff",
     WorldLockData = "lock data",
-    WorldUnlockData = "unlock data"
+    WorldUnlockData = "unlock data",
+    WorldDeleteData = "delete data"
 }
 export interface CommonAPI {
     isConnected: boolean;

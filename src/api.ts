@@ -80,15 +80,15 @@ export interface WorldAPI extends CommonAPI {
     setDataSource(name: string, source?: DataSource): boolean;
     deleteDataSource(name: string): boolean;
 
-    pullAllData(): PromiseLike<Array<Tagged<Data>>>;
-    pullData(name: string): PromiseLike<Data | undefined>;
+    pullData(name: string): PromiseLike<Array<Tagged<Data>> | Data | undefined>;
 
-    pushAllData(unlock?: boolean): PromiseLike<void>;
     pushData(name: string, unlock?: boolean): PromiseLike<void>;
     pushDataDiff(name: string, diff: DataDiff[] | undefined, unlock?: boolean): PromiseLike<void>;
 
     lockData(name: string): PromiseLike<boolean>;
     unlockData(name: string): PromiseLike<boolean>;
+
+    deleteData(name: string): PromiseLike<void>;
 }
 
 export interface PublicAPI {
